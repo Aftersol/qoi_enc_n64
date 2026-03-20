@@ -45,7 +45,7 @@
 /// @param filename 
 /// @return Success of saving the screenshot
 bool save_screenshot(surface_t* disp, const char* filename) {
-
+    if (disp == NULL) return false;
     // Get the framebuffer data
     uint16_t* framebuffer = (uint16_t*)disp->buffer;
 
@@ -57,7 +57,6 @@ bool save_screenshot(surface_t* disp, const char* filename) {
         .colorspace = QOI_SRGB
     };
 
-    qoi_desc_t desc;
     qoi_set_dimensions(&desc, 320, 240); // Resolution of the N64 framebuffer
 
     qoi_set_channels(&desc, 3); // RGB format because the N64 framebuffer does not have an alpha channel
@@ -65,7 +64,7 @@ bool save_screenshot(surface_t* disp, const char* filename) {
     qoi_set_colorspace(&desc, QOI_SRGB); // The N64 framebuffer uses sRGB color space
 
     qoi_enc_t enc; 
-    qoi_enc_init(&desc, &enc, NULL); // Initialize the encoder with the descriptor
+    qoi_enc_init(&desc, &enc); // Initialize the encoder with the descriptor
 
     FILE* fp = fopen(filename, "wb");
     if (!fp)
@@ -83,10 +82,10 @@ bool save_screenshot(surface_t* disp, const char* filename) {
     for (uint32_t px = 0; px < enc.len; px++)
     {
         uint32_t rgba = n64_color16_to_rgba32(framebuffer[px]);
-        qoi_encode_chunk(&desc, &enc, &framebuffer[px]);
+        qoi_encode_chunk(&desc, &enc, &rgba);
         
         if (enc.pixels_written >= enc.len) {
-            fwrite(enc->buffer0, 1, enc.len, fp);
+            fwrite(enc.buffer0, 1, enc.len, fp);
             break;
         };
 
@@ -101,6 +100,53 @@ bool save_screenshot(surface_t* disp, const char* filename) {
 
     fwrite(QOI_PADDING, 8, sizeof(QOI_PADDING), fp); // Write the padding bytes
     fclose(fp);
+    return true;
+}
+
+bool save_screenshot_null(surface_t* disp) {
+    if (disp == NULL) return false;
+    // Get the framebuffer data
+    uint16_t* framebuffer = (uint16_t*)disp->buffer;
+
+    // Save the screenshot using the QOI encoder
+    qoi_desc_t desc = {
+        .width = 320,
+        .height = 240,
+        .channels = 3, // RGB format
+        .colorspace = QOI_SRGB
+    };
+
+    qoi_set_dimensions(&desc, 320, 240); // Resolution of the N64 framebuffer
+
+    qoi_set_channels(&desc, 3); // RGB format because the N64 framebuffer does not have an alpha channel
+    
+    qoi_set_colorspace(&desc, QOI_SRGB); // The N64 framebuffer uses sRGB color space
+
+    qoi_enc_t enc; 
+    qoi_enc_init(&desc, &enc); // Initialize the encoder with the descriptor
+
+    // Write the QOI header
+    uint8_t header[14];
+    write_qoi_header(&desc, header);
+
+    // Encode the pixel data
+    for (uint32_t px = 0; px < enc.len; px++)
+    {
+        uint32_t rgba = n64_color16_to_rgba32(framebuffer[px]);
+        qoi_encode_chunk(&desc, &enc, &rgba);
+        
+        if (enc.pixels_written >= enc.len) {
+            break;
+        };
+
+        // Write the buffer to the file when it is almost full,
+        // leaving space for the padding bytes at the end of the file
+        if (enc.buffer_offset >= 4096-8) { 
+            enc.buffer_offset = 0;
+        }
+        
+    }
+
     return true;
 }
 
@@ -131,12 +177,14 @@ int main(void) {
     float x = 0.0f;
     float y = 0.0f;
 
-    float speed = 16.0f;
+    float speed = 0.1f;
 
     bool toRight = true;
     bool toDown = true;
 
-    sprite_t* logo = sprite_load("rom://n64brew.sprite");
+    float encodedTime = 0.0f;
+
+    rdpq_font_t *font;
 
     // Initialize libdragon subsystems
     debug_init_isviewer();
@@ -147,10 +195,16 @@ int main(void) {
 
     timer_init();
     joypad_init();
+    rdpq_init();
 
     dfs_init(DFS_DEFAULT_LOCATION);
 
     display_init(RESOLUTION_320x240, DEPTH_16_BPP, 2, GAMMA_NONE, ANTIALIAS_RESAMPLE);
+
+    font = rdpq_font_load_builtin(FONT_BUILTIN_DEBUG_MONO);
+    rdpq_text_register_font(1, font);
+
+    sprite_t* logo = sprite_load("rom://n64brew.sprite");
     uint64_t start = timer_ticks(), end = timer_ticks();
     float delta = 0.0f;
     while (1) {
@@ -159,7 +213,7 @@ int main(void) {
 
         joypad_port_t port = JOYPAD_PORT_1;
 
-        joypad_inputs_t input = joypad_poll_port(port);
+        joypad_poll();
         joypad_buttons_t pressed = joypad_get_buttons_pressed(port);
 
         end = timer_ticks();
@@ -172,7 +226,7 @@ int main(void) {
         // show that the screen is being updated and to have something to screenshot. 
         // The logo will bounce around the screen and change direction when it hits the edge of the screen.
         if (toDown) {
-            if(y < 240.0f) {
+            if(y < 240.0f - (logo->height * 0.5f)) {
                 y += speed * delta;
             }
             else {
@@ -189,7 +243,7 @@ int main(void) {
         }
 
         if (toRight) {
-            if (x < 320.0f) {
+            if (x < 320.0f - (logo->width * 0.5)) {
                 x += speed * delta;
             }
             else {
@@ -211,17 +265,48 @@ int main(void) {
         rdpq_fill_rectangle(0, 0, 320, 240);
 
         rdpq_set_mode_copy(true);
-        rdpq_sprite_bilt(logo, x, y, 0, 0, logo->width, logo->height);
+        rdpq_sprite_blit(logo, (int)x, (int)y, &( rdpq_blitparms_t ) {
+            .scale_x = 0.5f,
+            .scale_y = 0.5f
+        });
+
+        rdpq_set_mode_standard();
+
+        rdpq_text_printf(&(rdpq_textparms_t) {
+                .width = 320-32,
+                .align = ALIGN_LEFT,
+                .wrap = WRAP_WORD,
+            }, 1, 32, 32, "Encoded in %.2f ms", encodedTime);
+
+        
+        if (pressed.b) {
+            FILE* fp = fopen("sd://screenshot.raw", "wb");
+            if (fp) {
+                fclose(fp);
+                save_screenshot_raw(disp, "sd://screenshot.raw");
+            }
+        }
+        else if (pressed.a) {
+            FILE* fp = fopen("sd://screenshot.qoi", "wb");
+
+            if (fp) {
+                
+                fclose(fp);
+                float startEncode = timer_ticks();
+                save_screenshot(disp, "sd://screenshot.qoi");
+                float endEncode = timer_ticks();
+                encodedTime = TIMER_MICROS(endEncode - startEncode) / 1000.0f; // Convert to milliseconds
+            }
+            else {
+                float startEncode = timer_ticks();
+                save_screenshot_null(disp);
+                float endEncode = timer_ticks();
+                encodedTime = TIMER_MICROS(endEncode - startEncode) / 1000.0f; // Convert to milliseconds
+            }
+        }
 
         rdpq_detach_show();
-        
-        if (input.btn.b) {
-            save_screenshot_raw(disp, "sd://screenshot.raw");
-        }
-        else if (input.btn.a) {
-            save_screenshot(disp, "sd://screenshot.qoi");
-        }
-        rdpq_tex_bilt();
+
     }
 
     return 0;

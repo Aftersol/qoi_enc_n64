@@ -148,7 +148,7 @@ bool read_qoi_header(qoi_desc_t *desc, void* data);
 
 /* QOI encoder functions */
 
-bool qoi_enc_init(qoi_desc_t* desc, qoi_enc_t* enc, void* data);
+bool qoi_enc_init(qoi_desc_t* desc, qoi_enc_t* enc);
 bool qoi_enc_done(qoi_enc_t* enc);
 
 void qoi_encode_chunk(qoi_desc_t *desc, qoi_enc_t *enc, void *qoi_pixel_bytes);
@@ -251,7 +251,7 @@ static inline int32_t qoi_get_index_position(qoi_pixel_t pixel)
     return (pixel.red * 3 + pixel.green * 5 + pixel.blue * 7 + pixel.alpha * 11) % 64;
 }
 
-/// @brief Initalize the QOI desciptor to the default value\
+/// @brief Initalize the QOI desciptor to the default values
 /// @param desc QOI descriptor to initialize
 /// @return If the descriptor initialized successfully
 bool qoi_desc_init(qoi_desc_t *desc)
@@ -338,16 +338,19 @@ static inline void qoi_enc_rgb(qoi_enc_t *enc, qoi_pixel_t px)
 /// @param px The pixel containing the RGBA information to place into the QOI opcode
 static inline void qoi_enc_rgba(qoi_enc_t *enc, qoi_pixel_t px)
 {
-    uint8_t tag[5] =
+    uint8_t tag[8] =
     {
         QOI_OP_RGBA,
         px.red,
         px.green,
         px.blue,
-        px.alpha
+        px.alpha,
+        0,
+        0,
+        0
     };
 
-    *(uint64_t*)(&enc->buffer0[buffer_offset]) = *(uint64_t*)tag & 0xFFFFFFFFFF000000 | enc->buffer0[enc->buffer_offset] & 0x0000000000FFFFFF;
+    *(uint64_t*)(&enc->buffer0[enc->buffer_offset]) = (*(uint64_t*)tag & 0xFFFFFFFFFF000000) | (enc->buffer0[enc->buffer_offset] & 0x0000000000FFFFFF);
 
     enc->buffer_offset += 5;
 }
@@ -386,7 +389,7 @@ static inline void qoi_enc_luma(qoi_enc_t *enc, uint8_t green_diff, uint8_t dr_d
         (uint8_t)(dr_dg + 8) << 4 | (uint8_t)(db_dg + 8)
     };
 
-    *(uint16_t*)enc->buffer_offset = qoi_to_be16(*(uint16_t*)tag);
+    *(uint16_t*)&enc->buffer0[enc->buffer_offset] = *(uint16_t*)tag;
 
     enc->buffer_offset += 2;
 }
@@ -399,7 +402,7 @@ static inline void qoi_enc_run(qoi_enc_t *enc)
     uint8_t tag = QOI_OP_RUN | (enc->run - 1);
     enc->run = 0;
     
-    enc->buffer_offset++[0] = tag;
+    enc->buffer0[enc->buffer_offset++] = tag;
 }
 
 /// @brief Encode pixel data into QOI opcodes
@@ -513,14 +516,14 @@ bool qoi_enc_init(qoi_desc_t* desc, qoi_enc_t* enc)
 
     for (uint8_t element = 0; element < 64; element++) {
         /* Initalize all the pixels in the buffer to zero for each channel of each pixels */
-        qoi_initalize_pixel(&enc->buffer[element]); 
+        qoi_initalize_pixel(&enc->pix_buffer[element]); 
     }
 
     enc->len = (size_t)desc->width * (size_t)desc->height;
 
-    enc->pad = 0;
     enc->run = 0;
     enc->pixel_offset = 0;
+    enc->pixels_written = 0;
 
     /*  
         The decoder and encoder start with 

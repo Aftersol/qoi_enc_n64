@@ -20,26 +20,36 @@
 #   SOFTWARE.
 #
 
-V=1
 SOURCE_DIR=src
 BUILD_DIR=build
 include $(N64_INST)/include/n64.mk
 
 all: qoi_enc.z64
 .PHONY: all
-FILESYSTEM_DIR = filesystem
-assets = $(FILESYSTEM_DIR)/n64logo.png
 
-OBJS = $(BUILD_DIR)/main.o $(BUILD_DIR)/qoi_screenshot.o
+FILESYSTEM_DIR = filesystem
+
+assets = $(FILESYSTEM_DIR)/n64brew.png
+assets_conv = $(addprefix filesystem/,$(notdir $(assets:%.png=%.sprite)))
+
+AUDIOCONV_FLAGS ?=
+MKSPRITE_FLAGS ?=
+
+OBJS = $(BUILD_DIR)/main.o
+
+$(FILESYSTEM_DIR)/%.sprite: $(FILESYSTEM_DIR)/%.png
+	@mkdir -p $(dir $@)
+	@echo "    [SPRITE] $@"
+	@$(N64_MKSPRITE) $(MKSPRITE_FLAGS) -o $(FILESYSTEM_DIR) "$<"
 
 qoi_enc.z64: N64_ROM_TITLE="qoiScreenshot"
 qoi_enc.z64: $(BUILD_DIR)/qoi_enc.dfs
 
 $(BUILD_DIR)/qoi_enc.elf: $(OBJS)
-$(BUILD_DIR)/qoi_enc.dfs: $(assets)
+$(BUILD_DIR)/qoi_enc.dfs: $(assets_conv)
 	@echo "	[DFS] $@"
 	if [ ! -s "$<"]; then rm -f "$<"; fi
-	$(N64_MKDFS) "$@" filesystem >/dev/null
+	$(N64_MKDFS) "$@" $(FILESYSTEM_DIR) >/dev/null
 
 clean:
 	rm -f $(BUILD_DIR)/* *.z64
