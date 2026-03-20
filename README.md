@@ -1,4 +1,3 @@
-make me a markdown
 # QOI Encoder Demo for N64
 
 Small, portable QOI (Quite OK Image) encoder for Nintendo 64
