@@ -232,6 +232,7 @@ int main(void) {
     dfs_init(DFS_DEFAULT_LOCATION);
 
     display_init(RESOLUTION_320x240, DEPTH_16_BPP, 2, GAMMA_NONE, ANTIALIAS_RESAMPLE);
+    
 
     font = rdpq_font_load_builtin(FONT_BUILTIN_DEBUG_MONO);
     rdpq_text_register_font(1, font);
@@ -240,6 +241,8 @@ int main(void) {
     sprite_t* background = sprite_load("rom:/background.sprite");
     uint64_t start = timer_ticks(), end = timer_ticks();
     float delta = 0.0f;
+
+    debug_init_sdfs("sd:/", -1);
     while (1) {
         // Start drawing to the screen
         surface_t* disp;
