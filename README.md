@@ -43,4 +43,6 @@ libdragon make
 
 ## License
 
-MIT License — see LICENSE file for details.
+MIT License — see [LICENSE file](./LICENSE) for details.
+
+[purple white and orange light by mymind](https://unsplash.com/photos/purple-white-and-orange-light-tZCrFpSNiIQ) - Licensed under Unsplash License
