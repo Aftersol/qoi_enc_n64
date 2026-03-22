@@ -35,12 +35,13 @@ extern "C" {
 
 #include <stdint.h>
 
-/// @brief Expand 5-bit [0..31] to 8-bit [0..255] with good coverage
-/// @param v The 5-bit value to expand
-/// @return The expanded 8-bit value
-inline uint8_t n64_5_to_8(uint8_t v)
+/// @brief Reads an 16-bit unsigned big endian integer number
+/// @param val value of a 16-bit unsigned integer in big endian 
+/// @return converted value of the unsigned big endian value passed into read_be_u16 in their endianness of their machine
+uint16_t read_be_u16(uint16_t val)
 {
-    return (v << 3) | (v >> 2);
+    uint8_t* val_ptr = (uint8_t*)&val;
+    return (uint16_t)((val_ptr[1] << 0) | (val_ptr[0] << 8));
 }
 
 /// @brief Convert N64 16-bit (5R-5G-5B-1A) to 0xRRGGBBAA (32-bit).
@@ -48,10 +49,16 @@ inline uint8_t n64_5_to_8(uint8_t v)
 /// @return The converted 32-bit RGBA pixel value
 inline uint32_t n64_color16_to_rgba32(uint16_t px16)
 {
-    uint32_t r = n64_5_to_8((px16 >> 11) & 0x1F);
-    uint32_t g = n64_5_to_8((px16 >>  6) & 0x1F);
-    uint32_t b = n64_5_to_8((px16 >>  1) & 0x1F);
-    uint32_t a = (px16 & 1) ? 0xFFu : 0x00u;
+    int r = (read_be_u16(px16) >> 11) & 0x1F;
+    int g = (read_be_u16(px16) >>  6) & 0x1F;
+    int b = (read_be_u16(px16) >>  1) & 0x1F;
+    int a = (read_be_u16(px16) >>  0) & 0x01;
+
+    // expand to 8 bit
+    r = (r << 3) | (r >> 2);
+    g = (g << 3) | (g >> 2);
+    b = (b << 3) | (b >> 2);
+    a = a * 255;
 
     return (r << 24) | (g << 16) | (b << 8) | a;
 }

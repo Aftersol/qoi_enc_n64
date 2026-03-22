@@ -67,7 +67,7 @@ bool save_screenshot(surface_t* disp, const char* filename, uint32_t *bytesWritt
 
     qoi_set_dimensions(&desc, 320, 240); // Resolution of the N64 framebuffer
 
-    qoi_set_channels(&desc, 3); // RGB format because the N64 framebuffer does not have an alpha channel
+    qoi_set_channels(&desc, 4); // RGBA format because the N64 framebuffer does have an alpha channel
     
     qoi_set_colorspace(&desc, QOI_SRGB); // The N64 framebuffer uses sRGB color space
 
@@ -133,7 +133,7 @@ bool save_screenshot_null(surface_t* disp, uint32_t *bytesWritten) {
 
     qoi_set_dimensions(&desc, 320, 240); // Resolution of the N64 framebuffer
 
-    qoi_set_channels(&desc, 3); // RGB format because the N64 framebuffer does not have an alpha channel
+    qoi_set_channels(&desc, 4); // RGBA format because the N64 framebuffer does have an alpha channel
     
     qoi_set_colorspace(&desc, QOI_SRGB); // The N64 framebuffer uses sRGB color space
 
@@ -208,6 +208,9 @@ int main(void) {
     bool toRight = true;
     bool toDown = true;
 
+    bool showInfo = true;
+    bool showLogo = true;
+
     float encodedTime = 0.0f;
 
     rdpq_font_t *font;
@@ -238,7 +241,7 @@ int main(void) {
     rdpq_text_register_font(1, font);
 
     sprite_t* logo = sprite_load("rom:/n64brew.sprite");
-    sprite_t* background = sprite_load("rom:/background.sprite");
+    sprite_t* background = sprite_load("rom:/pm5544.sprite");
     uint64_t start = timer_ticks(), end = timer_ticks();
     float delta = 0.0f;
 
@@ -259,77 +262,92 @@ int main(void) {
 
         while(!(disp = display_try_get())) {;}
 
-        // Move the logo around the screen like a DVD logo to
-        // show that the screen is being updated and to have something to screenshot. 
-        // The logo will bounce around the screen and change direction when it hits the edge of the screen.
-        if (toDown) {
-            if(y < 240.0f - (logo->height * 0.5f)) {
-                y += speed * delta;
+        if (showLogo) {
+            // Move the logo around the screen like a DVD logo to
+            // show that the screen is being updated and to have something to screenshot. 
+            // The logo will bounce around the screen and change direction when it hits the edge of the screen.
+            if (toDown) {
+                if(y < 240.0f - (logo->height * 0.5f)) {
+                    y += speed * delta;
+                }
+                else {
+                    toDown = false;
+                }
             }
             else {
-                toDown = false;
+                if (y > 0.0f) {
+                    y -= speed * delta;
+                }
+                else {
+                    toDown = true;
+                }    
             }
-        }
-        else {
-            if (y > 0.0f) {
-                y -= speed * delta;
+
+            if (toRight) {
+                if (x < 320.0f - (logo->width * 0.5)) {
+                    x += speed * delta;
+                }
+                else {
+                    toRight = false;
+                }
             }
             else {
-                toDown = true;
-            }    
+                if (x > 0.0f) {
+                    x -= speed * delta;
+                }
+                else {
+                    toRight = true;
+                }
+            }
         }
 
-        if (toRight) {
-            if (x < 320.0f - (logo->width * 0.5)) {
-                x += speed * delta;
-            }
-            else {
-                toRight = false;
-            }
-        }
-        else {
-            if (x > 0.0f) {
-                x -= speed * delta;
-            }
-            else {
-                toRight = true;
-            }
-        }
 
         rdpq_attach(disp, NULL);
 
         rdpq_set_mode_copy(true);
         rdpq_sprite_blit(background, 0, 0, NULL);
 
-        rdpq_set_mode_copy(true);
-        rdpq_sprite_blit(logo, (int)x, (int)y, &( rdpq_blitparms_t ) {
-            .scale_x = 0.5f,
-            .scale_y = 0.5f
-        });
+        if (showLogo) {
+            rdpq_set_mode_copy(true);
+            rdpq_sprite_blit(logo, (int)x, (int)y, &( rdpq_blitparms_t ) {
+                .scale_x = 0.5f,
+                .scale_y = 0.5f
+            });
+        }
+
 
         rdpq_set_mode_standard();
 
-        rdpq_text_printf(&(rdpq_textparms_t) {
+        if (showInfo) {
+            rdpq_text_printf(&(rdpq_textparms_t) {
+                    .width = 320-32,
+                    .align = ALIGN_LEFT,
+                    .wrap = WRAP_WORD,
+                }, 1, 32, 32, "Encoded in %.8f ms, bytes written: %lu bytes", encodedTime, bytesWritten);
+                
+            rdpq_text_printf(&(rdpq_textparms_t) {
                 .width = 320-32,
                 .align = ALIGN_LEFT,
                 .wrap = WRAP_WORD,
-            }, 1, 32, 32, "Encoded in %.8f ms, bytes written: %lu bytes", encodedTime, bytesWritten);
+            }, 1, 32, 60, "State: %s", scrType == SCREENSHOT_NEVER_TAKEN ? "No screenshot taken" : 
+                scrType == SCREENSHOT_TYPE_NULL ? "Saved to null" :
+                scrType == SCREENSHOT_TYPE_RAW ? "Saved as raw" :
+                scrType == SCREENSHOT_TYPE_QOI ? "Saved as QOI" :
+                scrType == SCREENSHOT_FRAME_CAPTURED ? "Frame captured, not saved" : "Unknown");
 
-        rdpq_text_printf(&(rdpq_textparms_t) {
-            .width = 320-32,
-            .align = ALIGN_LEFT,
-            .wrap = WRAP_WORD,
-        }, 1, 32, 60, "State: %s", scrType == SCREENSHOT_NEVER_TAKEN ? "No screenshot taken" : 
-            scrType == SCREENSHOT_TYPE_NULL ? "Saved to null" :
-            scrType == SCREENSHOT_TYPE_RAW ? "Saved as raw" :
-            scrType == SCREENSHOT_TYPE_QOI ? "Saved as QOI" :
-            scrType == SCREENSHOT_FRAME_CAPTURED ? "Frame captured, not saved" : "Unknown");
+            rdpq_text_printf(&(rdpq_textparms_t) {
+                .width = 320-32,
+                .align = ALIGN_LEFT,
+                .wrap = WRAP_WORD,
+            }, 1, 32, 72, "Save successful: %s", successfulSave ? "Yes" : "No");
+        }
+        if (pressed.start) {
+            showInfo ^= true;
+        }
 
-        rdpq_text_printf(&(rdpq_textparms_t) {
-            .width = 320-32,
-            .align = ALIGN_LEFT,
-            .wrap = WRAP_WORD,
-        }, 1, 32, 72, "Save successful: %s", successfulSave ? "Yes" : "No");
+        if (pressed.d_down) {
+            showLogo ^= true;
+        }
         
         if (pressed.z) {
 
