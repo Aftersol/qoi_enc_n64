@@ -108,13 +108,13 @@ typedef struct
     qoi_pixel_t pix_buffer[64];
     qoi_pixel_t prev_pixel;
 
-    uint8_t enc_buffer[4096];
+    uint8_t* enc_buffer;
 
-    uint16_t buffer_offset;
+    size_t buffer_offset;
+    size_t buffer_len;
 
     size_t pixel_offset, len;
 
-    uint8_t* data;
     size_t pixels_written;
 
     uint8_t run;
@@ -151,7 +151,10 @@ bool read_qoi_header(qoi_desc_t *desc, void* data);
 bool qoi_enc_init(qoi_desc_t* desc, qoi_enc_t* enc);
 bool qoi_enc_done(qoi_enc_t* enc);
 
+bool qoi_enc_alloc_buffer(qoi_enc_t *enc, size_t data_len);
+bool qoi_enc_free_buffer(qoi_enc_t *enc);
 bool qoi_enc_reset_buffer(qoi_enc_t* enc);
+
 void qoi_encode_chunk(qoi_desc_t *desc, qoi_enc_t *enc, void *qoi_pixel_bytes);
 
 static inline void qoi_enc_rgb(qoi_enc_t *enc, qoi_pixel_t px);
@@ -512,6 +515,28 @@ bool qoi_enc_init(qoi_desc_t* desc, qoi_enc_t* enc)
         as the previous pixel value. 
     */
     qoi_set_pixel_rgba(&enc->prev_pixel, 0, 0, 0, 255);
+
+    return true;
+}
+
+bool qoi_enc_alloc_buffer(qoi_enc_t *enc, size_t len)
+{
+    if (enc == NULL || len == 0) return false;
+
+    enc->enc_buffer = (uint8_t*)malloc(len * sizeof(uint8_t));
+    if (enc->enc_buffer == NULL) return false;
+    enc->buffer_len = len;
+
+    return true;
+}
+
+bool qoi_enc_free_buffer(qoi_enc_t *enc)
+{
+    if (enc == NULL || enc->enc_buffer == NULL) return false;
+
+    free(enc->enc_buffer);
+    enc->enc_buffer = NULL;
+    enc->buffer_len = 0;
 
     return true;
 }

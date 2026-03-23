@@ -62,6 +62,8 @@ bool save_screenshot(surface_t* disp, const char* filename, uint32_t *bytesWritt
     // Get the framebuffer data
     uint16_t* framebuffer = (uint16_t*)disp->buffer;
 
+    const uint32_t enc_buffer_size = 4096;
+
     // Save the screenshot using the QOI encoder
     qoi_desc_t desc;
 
@@ -85,6 +87,8 @@ bool save_screenshot(surface_t* disp, const char* filename, uint32_t *bytesWritt
     uint8_t header[14];
     write_qoi_header(&desc, header);
     fwrite(header, 1, sizeof(header), fp);
+    
+    qoi_enc_alloc_buffer(&enc, enc_buffer_size);
 
     *bytesWritten += 14;
 
@@ -102,7 +106,7 @@ bool save_screenshot(surface_t* disp, const char* filename, uint32_t *bytesWritt
 
         // Write the buffer to the file when it is almost full,
         // leaving space for the padding bytes at the end of the file
-        if (enc.buffer_offset >= 4096-8) { 
+        if (enc.buffer_offset >= enc.buffer_len-8) { 
             fwrite(enc.enc_buffer, 1, enc.buffer_offset, fp);
             *bytesWritten += enc.buffer_offset;
             qoi_enc_reset_buffer(&enc);
@@ -113,6 +117,8 @@ bool save_screenshot(surface_t* disp, const char* filename, uint32_t *bytesWritt
     fwrite(QOI_PADDING, sizeof(uint8_t), 8, fp); // Write the padding bytes
 
     *bytesWritten += 8;
+
+    qoi_enc_free_buffer(&enc);
 
     fclose(fp);
     return true;
@@ -125,6 +131,8 @@ bool save_screenshot_null(surface_t* disp, uint32_t *bytesWritten) {
     if (disp == NULL || bytesWritten == NULL) return false;
     // Get the framebuffer data
     uint16_t* framebuffer = (uint16_t*)disp->buffer;
+
+    const uint32_t enc_buffer_size = 4096;
 
     // Save the screenshot using the QOI encoder
     qoi_desc_t desc;
@@ -142,6 +150,7 @@ bool save_screenshot_null(surface_t* disp, uint32_t *bytesWritten) {
     // Write the QOI header
     uint8_t header[14];
     write_qoi_header(&desc, header);
+    qoi_enc_alloc_buffer(&enc, enc_buffer_size);
 
     *bytesWritten += 14; // Account for the header bytes
 
@@ -159,7 +168,7 @@ bool save_screenshot_null(surface_t* disp, uint32_t *bytesWritten) {
 
         // Write the buffer to the file when it is almost full,
         // leaving space for the padding bytes at the end of the file
-        if (enc.buffer_offset >= 4096-8) { 
+        if (enc.buffer_offset >= enc.buffer_len-8) { 
             *bytesWritten += enc.buffer_offset;
             qoi_enc_reset_buffer(&enc);
         }
@@ -167,6 +176,7 @@ bool save_screenshot_null(surface_t* disp, uint32_t *bytesWritten) {
     }
 
     *bytesWritten += 8; // Account for the padding bytes
+    qoi_enc_free_buffer(&enc);
 
     return true;
 }
