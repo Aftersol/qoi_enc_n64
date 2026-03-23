@@ -407,6 +407,7 @@ void qoi_encode_chunk(qoi_desc_t *desc, qoi_enc_t *enc, void *qoi_pixel_bytes)
         cur_pixel.alpha = 255;
 
     uint8_t index_pos = qoi_get_index_position(cur_pixel);
+    enc->pixels_written++;
 
     /* Increment run length by 1 if pixels are the same */
     if (qoi_cmp_pixel(cur_pixel, enc->prev_pixel, desc->channels))

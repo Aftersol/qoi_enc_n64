@@ -93,7 +93,6 @@ bool save_screenshot(surface_t* disp, const char* filename, uint32_t *bytesWritt
     {
         uint32_t rgba = n64_color16_to_rgba32(framebuffer[px]);
         qoi_encode_chunk(&desc, &enc, &rgba);
-        enc.pixels_written++;
 
         if (enc.pixels_written >= enc.len) {
             fwrite(enc.buffer0, 1, enc.buffer_offset, fp);
@@ -151,8 +150,6 @@ bool save_screenshot_null(surface_t* disp, uint32_t *bytesWritten) {
     {
         uint32_t rgba = n64_color16_to_rgba32(framebuffer[px]);
         qoi_encode_chunk(&desc, &enc, &rgba);
-
-        enc.pixels_written++;
 
         if (enc.pixels_written >= enc.len) {
             *bytesWritten += enc.buffer_offset;
