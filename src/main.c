@@ -27,7 +27,9 @@
     SOFTWARE.
 
 */
+#include <stdatomic.h>
 #include <stdlib.h>
+#include <pthread.h>
 
 #include <libdragon.h>
 #include "../libdragon/include/joypad.h"
@@ -47,7 +49,9 @@ enum whichScreenshotType {
     /// @brief The screenshot was saved as a QOI file, which is the main functionality of this project
     SCREENSHOT_TYPE_QOI,
     /// @brief The screenshot was captured into a buffer but not saved, which is used for testing the performance of capturing the framebuffer without the bottleneck of encoding or writing to the SD card
-    SCREENSHOT_FRAME_CAPTURED
+    SCREENSHOT_FRAME_CAPTURED,
+    /// @brief The screenshot was not saved because the SD card doesn't exist, which is used for testing the performance of the encoder and framebuffer capture without the bottleneck of writing to the SD card when the SD card doesn't exist, which is a common scenario for N64 users who want to use this encoder just for capturing screenshots to a buffer without saving them to the SD card
+    SCREENSHOT_NO_SD_CARD
 } whichScreenshotType;
 
 /// @file qoi_n64_scr.c
@@ -212,6 +216,8 @@ int main(void) {
 
     float speed = 0.1f;
 
+    bool sdCardExists;
+
     bool toRight = true;
     bool toDown = true;
 
@@ -227,6 +233,12 @@ int main(void) {
     surface_t lastSavedFrame = surface_alloc(FMT_RGBA16, 320, 240);
 
     uint32_t bytesWritten = 0;
+
+    thrd_t thread[2];
+    mtx_t mutex[2];
+
+    mtx_init(&mutex[0], mtx_plain);
+    mtx_init(&mutex[1], mtx_plain);
 
     // Initialize libdragon subsystems
     debug_init_isviewer();
@@ -252,7 +264,7 @@ int main(void) {
     uint64_t start = timer_ticks(), end = timer_ticks();
     float delta = 0.0f;
 
-    debug_init_sdfs("sd:/", -1);
+    sdCardExists = debug_init_sdfs("sd:/", -1);
     while (1) {
         // Start drawing to the screen
         surface_t* disp;
@@ -326,6 +338,8 @@ int main(void) {
         rdpq_set_mode_standard();
 
         if (showInfo) {
+            
+            mutex_lock(&mutex[0]);
             rdpq_text_printf(&(rdpq_textparms_t) {
                     .width = 320-32,
                     .align = ALIGN_LEFT,
@@ -340,13 +354,17 @@ int main(void) {
                 scrType == SCREENSHOT_TYPE_NULL ? "Saved to null" :
                 scrType == SCREENSHOT_TYPE_RAW ? "Saved as raw" :
                 scrType == SCREENSHOT_TYPE_QOI ? "Saved as QOI" :
-                scrType == SCREENSHOT_FRAME_CAPTURED ? "Frame captured, not saved" : "Unknown");
+                scrType == SCREENSHOT_FRAME_CAPTURED ? "Frame captured, not saved" :
+                scrType == SCREENSHOT_NO_SD_CARD ? "No SD card found" :
+                "Unknown"
+            );
 
             rdpq_text_printf(&(rdpq_textparms_t) {
                 .width = 320-32,
                 .align = ALIGN_LEFT,
                 .wrap = WRAP_WORD,
             }, 1, 32, 72, "Save successful: %s", successfulSave ? "Yes" : "No");
+            mutex_unlock(&mutex[0]);
         }
         if (pressed.start) {
             showInfo ^= true;
@@ -362,11 +380,13 @@ int main(void) {
             rdpq_attach(&lastSavedFrame, NULL);
             rdpq_set_mode_copy(false);
             rdpq_tex_blit(disp, 0, 0, NULL);
+            rdpq_detach();
 
+            mutex_lock(&mutex[0]);
             scrType = SCREENSHOT_FRAME_CAPTURED;
             successfulSave = true;
-
-            rdpq_detach();
+            mutex_unlock(&mutex[0]);
+            
         }
         
         if (held.d_left) {
@@ -377,39 +397,74 @@ int main(void) {
         if (pressed.b) {
 
             surface_t img = surface_alloc(FMT_RGBA16, 320, 240);
+            if (!sdCardExists) {
+                mutex_lock(&mutex[0]);
+                scrType = SCREENSHOT_NO_SD_CARD;
+                bytesWritten = 0;
+                encodedTime = 0.0f;
+                successfulSave = false;
+                mutex_unlock(&mutex[0]);
+            }
+            else {
+                rdpq_attach(&img, NULL);
+                rdpq_set_mode_copy(false);
+                rdpq_tex_blit(disp, 0, 0, NULL);
+                rdpq_detach();
 
-            rdpq_attach(&img, NULL);
-            rdpq_set_mode_copy(false);
-            rdpq_tex_blit(disp, 0, 0, NULL);
+                mutex_lock(&mutex[0]);
 
-            float startEncode = timer_ticks();
-            successfulSave = save_screenshot_raw(&img, "sd:/screenshot.raw", &bytesWritten);
-            float endEncode = timer_ticks();
-            encodedTime = TIMER_MICROS(endEncode - startEncode) / 1000.0f; // Convert to milliseconds
+                float startEncode = timer_ticks();
+                thrd_create(&thread[0], (thrd_start_t)save_screenshot_raw, &img, "sd:/screenshot.raw", &bytesWritten);
+                //successfulSave = save_screenshot_raw(&img, "sd:/screenshot.raw", &bytesWritten);
+                thrd_join(thread[0], NULL);
+                float endEncode = timer_ticks();
+                encodedTime = TIMER_MICROS(endEncode - startEncode) / 1000.0f; // Convert to milliseconds
 
-            scrType = SCREENSHOT_TYPE_RAW;
+                scrType = SCREENSHOT_TYPE_RAW;
 
-            rdpq_detach();
+                mutex_unlock(&mutex[0]);
 
-            surface_free(&img);
+                surface_free(&img);
+            }
+
             
         }
         else if (pressed.a) {
             surface_t img = surface_alloc(FMT_RGBA16, 320, 240);
-            
-            rdpq_attach(&img, NULL);
-            rdpq_set_mode_copy(false);
-            rdpq_tex_blit(disp, 0, 0, NULL);
-            rdpq_detach();
+            if (!sdCardExists) {
+                mutex_lock(&mutex[0]);
 
+                scrType = SCREENSHOT_NO_SD_CARD;
+                bytesWritten = 0;
+                encodedTime = 0.0f;
+                successfulSave = false;
+
+                mutex_unlock(&mutex[0]);
+            }
+            else {
+                rdpq_attach(&img, NULL);
+                rdpq_set_mode_copy(false);
+                rdpq_tex_blit(disp, 0, 0, NULL);
+                rdpq_detach();
                 
-            float startEncode = timer_ticks();
-            successfulSave = save_screenshot(&img, "sd:/screenshot.qoi", &bytesWritten);
-            float endEncode = timer_ticks();
-            encodedTime = TIMER_MICROS(endEncode - startEncode) / 1000.0f; // Convert to milliseconds
-            scrType = SCREENSHOT_TYPE_QOI;
-            
-            surface_free(&img);
+                mutex_lock(&mutex[0]);
+
+                float startEncode = timer_ticks();
+
+                thrd_create(&thread[0], (thrd_start_t)save_screenshot, &img, "sd:/screenshot.qoi", &bytesWritten);
+                //successfulSave = save_screenshot(&img, "sd:/screenshot.qoi", &bytesWritten);
+                thrd_join(thread[0], NULL);
+
+                float endEncode = timer_ticks();
+
+                encodedTime = TIMER_MICROS(endEncode - startEncode) / 1000.0f; // Convert to milliseconds
+
+                scrType = SCREENSHOT_TYPE_QOI;
+
+                mutex_unlock(&mutex[0]);
+                
+                surface_free(&img);
+            }
         }
         else if (pressed.d_up) {
             surface_t img = surface_alloc(FMT_RGBA16, 320, 240);
@@ -419,11 +474,18 @@ int main(void) {
             rdpq_tex_blit(disp, 0, 0, NULL);
             rdpq_detach();
 
+            mutex_lock(&mutex[0]);
+
             float startEncode = timer_ticks();
-            successfulSave = save_screenshot_null(&img, &bytesWritten);
+            thrd_create(&thread[0], (thrd_start_t)save_screenshot_null, &img, &bytesWritten);
+            //successfulSave = save_screenshot_null(&img, &bytesWritten);
             float endEncode = timer_ticks();
+            thrd_join(thread[0], NULL);
             encodedTime = TIMER_MICROS(endEncode - startEncode) / 1000.0f; // Convert to milliseconds
+
             scrType = SCREENSHOT_TYPE_NULL;
+
+            mutex_unlock(&mutex[0]);
 
             surface_free(&img);
 
