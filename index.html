@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>N64 Raw Framebuffer Converter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .settings-container {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+        }
+        .settings-container label {
+            display: block;
+            margin: 10px 0 5px 0;
+            font-weight: bold;
+        }
+        .settings-container input,
+        .settings-container select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .upload-container {
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+        .upload-container:hover {
+            border-color: #999;
+        }
+        input[type="file"] {
+            display: none;
+        }
+        #output {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f5f5f5;
+            border-radius: 4px;
+            min-height: 50px;
+        }
+        #preview {
+            margin-top: 20px;
+            text-align: center;
+        }
+        #preview img {
+            max-width: 100%;
+            max-height: 400px;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <h1>N64 Raw Framebuffer Converter</h1>
+    
+    <div class="settings-container">
+        <label for="width">Width:</label>
+        <input type="number" id="width" value="320" min="1">
+        
+        <label for="height">Height:</label>
+        <input type="number" id="height" value="240" min="1">
+        
+        <label for="format">Format:</label>
+        <select id="format">
+            <option value="rgba16">RGBA16 (Big Endian)</option>
+            <option value="rgba32">RGBA32 (Big Endian)</option>
+        </select>
+    </div>
+    
+    <div class="upload-container" id="uploadArea">
+        <p>Click to upload or drag and drop raw framebuffer files here</p>
+        <input type="file" id="fileInput" accept=".raw,image/*">
+    </div>
+    
+        <div id="output"></div>
+    <div id="preview"></div>
+    <div id="downloadContainer" style="display: flex; justify-content: center; align-items: center; margin-top: 20px;">
+        <button id="downloadBtn" style="display: none; margin-top: 20px; padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px;">
+            Download PNG
+        </button>
+    </div>
+
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const uploadArea = document.getElementById('uploadArea');
+        const output = document.getElementById('output');
+        const preview = document.getElementById('preview');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const widthInput = document.getElementById('width');
+        const heightInput = document.getElementById('height');
+        const formatSelect = document.getElementById('format');
+        
+        let currentCanvas = null;
+        let currentFileName = '';
+
+        uploadArea.addEventListener('click', () => fileInput.click());
+
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.style.borderColor = '#007bff';
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.style.borderColor = '#ccc';
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.style.borderColor = '#ccc';
+            handleFiles(e.dataTransfer.files);
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            handleFiles(e.target.files);
+        });
+
+        downloadBtn.addEventListener('click', () => {
+            if (currentCanvas) {
+                const link = document.createElement('a');
+                const baseName = currentFileName.replace(/\.[^/.]+$/, '');
+                link.href = currentCanvas.toDataURL('image/png');
+                link.download = `${baseName}.png`;
+                link.click();
+            }
+        });
+
+        function handleFiles(files) {
+            for (let file of files) {
+                output.innerHTML = `<strong>File uploaded:</strong> ${file.name}<br>Size: ${(file.size / 1024).toFixed(2)} KB`;
+                
+                onFileUpload(file);
+            }
+        }
+
+        function onFileUpload(file) {
+            if (file.type.startsWith('image/') || file.name.endsWith('.raw')) {
+                if (file.name.endsWith('.raw')) {
+                    processRawFile(file);
+                } else {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        preview.innerHTML = `<img src="${e.target.result}" alt="${file.name}">`;
+                        downloadBtn.style.display = 'none';
+                    };
+                    reader.readAsDataURL(file);
+                }
+            } else {
+                preview.innerHTML = '<p>Please upload an image file or .raw file.</p>';
+            }
+        }
+
+        function processRawFile(file) {
+            const width = parseInt(widthInput.value) || 320;
+            const height = parseInt(heightInput.value) || 240;
+            const format = formatSelect.value;
+            
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const arrayBuffer = e.target.result;
+                const uint8Array = new Uint8Array(arrayBuffer);
+                
+                // Create canvas
+                const canvas = document.createElement('canvas');
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                
+                const imageData = ctx.createImageData(width, height);
+                const data = imageData.data;
+                
+                if (format === 'rgba16') {
+                    processRGBA16(uint8Array, data);
+                } else if (format === 'rgba32') {
+                    processRGBA32(uint8Array, data);
+                }
+                
+                ctx.putImageData(imageData, 0, 0);
+                preview.innerHTML = `<img src="${canvas.toDataURL('image/png')}" alt="${file.name}">`;
+                output.innerHTML += `<br>Converted ${format.toUpperCase()} (Big Endian) to PNG (${width}x${height})`;
+                
+                // Store canvas and filename for download
+                currentCanvas = canvas;
+                currentFileName = file.name;
+                downloadBtn.style.display = 'block';
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        function processRGBA16(uint8Array, data) {
+            // Process RGBA5551 (16-bit)
+            for (let i = 0; i < uint8Array.length; i += 2) {
+                const pixelIndex = (i / 2);
+                const dataIndex = pixelIndex * 4;
+                
+                // Read big endian 16-bit value
+                const rgba16 = (uint8Array[i] << 8) | uint8Array[i + 1];
+                
+                // Extract RGBA5551 components
+                const r = (rgba16 >> 11) & 0x1F;
+                const g = (rgba16 >> 6) & 0x1F;
+                const b = (rgba16 >> 1) & 0x1F;
+                const a = rgba16 & 0x01;
+                
+                // Convert 5-bit to 8-bit
+                data[dataIndex] = (r << 3) | (r >> 2);
+                data[dataIndex + 1] = (g << 3) | (g >> 2);
+                data[dataIndex + 2] = (b << 3) | (b >> 2);
+                data[dataIndex + 3] = a ? 255 : 0;
+            }
+        }
+
+        function processRGBA32(uint8Array, data) {
+            // Process RGBA8888 (32-bit)
+            for (let i = 0; i < uint8Array.length; i += 4) {
+                const pixelIndex = (i / 4);
+                const dataIndex = pixelIndex * 4;
+                
+                // Read big endian 32-bit RGBA
+                data[dataIndex] = uint8Array[i];         // R
+                data[dataIndex + 1] = uint8Array[i + 1]; // G
+                data[dataIndex + 2] = uint8Array[i + 2]; // B
+                data[dataIndex + 3] = uint8Array[i + 3]; // A
+            }
+        }
+    </script>
+</body>
+</html>
