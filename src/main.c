@@ -405,6 +405,7 @@ int main(void) {
                 mutex_unlock(&mutex);
             }
             else {
+                
                 rdpq_attach(&img, NULL);
                 rdpq_set_mode_copy(false);
                 rdpq_tex_blit(disp, 0, 0, NULL);
@@ -415,7 +416,7 @@ int main(void) {
                 float startEncode = timer_ticks();
                 thrd_create(&thread, (thrd_start_t)save_screenshot_raw, &img, "sd:/screenshot.raw", &bytesWritten);
                 //successfulSave = save_screenshot_raw(&img, "sd:/screenshot.raw", &bytesWritten);
-                thrd_join(thread[0], NULL);
+                thrd_join(thread, &successfulSave);
                 float endEncode = timer_ticks();
                 encodedTime = TIMER_MICROS(endEncode - startEncode) / 1000.0f; // Convert to milliseconds
 
@@ -452,7 +453,7 @@ int main(void) {
 
                 thrd_create(&thread, (thrd_start_t)save_screenshot, &img, "sd:/screenshot.qoi", &bytesWritten);
                 //successfulSave = save_screenshot(&img, "sd:/screenshot.qoi", &bytesWritten);
-                thrd_join(thread, NULL);
+                thrd_join(thread, &successfulSave);
 
                 float endEncode = timer_ticks();
 
@@ -479,7 +480,7 @@ int main(void) {
             thrd_create(&thread, (thrd_start_t)save_screenshot_null, &img, &bytesWritten);
             //successfulSave = save_screenshot_null(&img, &bytesWritten);
             float endEncode = timer_ticks();
-            thrd_join(thread, NULL);
+            thrd_join(thread, &successfulSave);
             encodedTime = TIMER_MICROS(endEncode - startEncode) / 1000.0f; // Convert to milliseconds
 
             scrType = SCREENSHOT_TYPE_NULL;
