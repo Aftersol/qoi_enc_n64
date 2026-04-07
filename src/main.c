@@ -58,8 +58,9 @@ enum whichScreenshotType {
 /// @brief This file contains code for N64 ROM for taking screenshots of whatever displayed on N64 to QOI file.
 
 /// @brief Saves the screenshot to the SD card if it somehow exists.
-/// @param disp 
-/// @param filename 
+/// @param disp The surface to capture, which is the framebuffer of the N64 display
+/// @param filename The name of the file to save the screenshot to
+/// @param bytesWritten The number of bytes written to the file
 /// @return Success of saving the screenshot
 bool save_screenshot(surface_t* disp, const char* filename, uint32_t *bytesWritten) {
     if (disp == NULL || bytesWritten == NULL) return false;
@@ -94,7 +95,7 @@ bool save_screenshot(surface_t* disp, const char* filename, uint32_t *bytesWritt
     
     qoi_enc_alloc_buffer(&enc, enc_buffer_size);
 
-    *bytesWritten += 14;
+    *bytesWritten += 22; // 14+8=22
 
     // Encode the pixel data
     for (uint32_t px = 0; px < enc.len; px++)
@@ -120,16 +121,16 @@ bool save_screenshot(surface_t* disp, const char* filename, uint32_t *bytesWritt
 
     fwrite(QOI_PADDING, sizeof(uint8_t), 8, fp); // Write the padding bytes
 
-    *bytesWritten += 8;
-
     qoi_enc_free_buffer(&enc);
 
     fclose(fp);
+
     return true;
 }
 
 /// @brief Saves the screenshot to null, which is used for testing the performance of the encoder without the bottleneck of writing to the SD card.
-/// @param disp
+/// @param disp The surface to capture, which is the framebuffer of the N64 display
+/// @param bytesWritten The number of bytes written to the file
 /// @return Success of saving the screenshot
 bool save_screenshot_null(surface_t* disp, uint32_t *bytesWritten) {
     if (disp == NULL || bytesWritten == NULL) return false;
@@ -156,7 +157,7 @@ bool save_screenshot_null(surface_t* disp, uint32_t *bytesWritten) {
     write_qoi_header(&desc, header);
     qoi_enc_alloc_buffer(&enc, enc_buffer_size);
 
-    *bytesWritten += 14; // Account for the header bytes
+    *bytesWritten += 22; // Account for the header bytes
 
     // Encode the pixel data
     for (uint32_t px = 0; px < enc.len; px++)
@@ -179,13 +180,16 @@ bool save_screenshot_null(surface_t* disp, uint32_t *bytesWritten) {
         
     }
 
-    *bytesWritten += 8; // Account for the padding bytes
     qoi_enc_free_buffer(&enc);
 
     return true;
 }
 
 /// @brief Saves the raw screenshot to the SD card if it somehow exists.
+/// @param disp The surface to capture, which is the framebuffer of the N64 display
+/// @param filename The name of the file to save the screenshot to
+/// @param bytesWritten The number of bytes written to the file
+/// @return Success of saving the screenshot
 bool save_screenshot_raw(surface_t* disp, const char* filename, uint32_t *bytesWritten) {
     if (disp == NULL || bytesWritten == NULL || filename == NULL) return false;
     // Get the framebuffer data
@@ -203,6 +207,7 @@ bool save_screenshot_raw(surface_t* disp, const char* filename, uint32_t *bytesW
     *bytesWritten = 320 * 240 * sizeof(uint16_t);
     
     fclose(fp);
+
     return true;
 }
 
