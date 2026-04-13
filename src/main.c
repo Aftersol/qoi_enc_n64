@@ -269,6 +269,7 @@ int main(void) {
     float delta = 0.0f;
 
     sdCardExists = debug_init_sdfs("sd:/", -1);
+    
     while (1) {
         // Start drawing to the screen
         surface_t* disp;
