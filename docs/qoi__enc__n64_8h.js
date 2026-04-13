@@ -1,0 +1,55 @@
+var qoi__enc__n64_8h =
+[
+    [ "qoi_desc_t", "structqoi__desc__t.html", "structqoi__desc__t" ],
+    [ "qoi_pixel_t", "unionqoi__pixel__t.html", "unionqoi__pixel__t" ],
+    [ "qoi_enc_t", "structqoi__enc__t.html", "structqoi__enc__t" ],
+    [ "QOI_OP_DIFF", "qoi__enc__n64_8h.html#ab610ca230e1099451b8e2845b523953a", null ],
+    [ "QOI_OP_INDEX", "qoi__enc__n64_8h.html#a29f45e3a02642ffc4c04e01c02cd8744", null ],
+    [ "QOI_OP_LUMA", "qoi__enc__n64_8h.html#ab08350e53912b532e3a03d29e79662ad", null ],
+    [ "QOI_OP_RGB", "qoi__enc__n64_8h.html#a031bbfff5ef9914642e2c87eeda257b6", null ],
+    [ "QOI_OP_RGBA", "qoi__enc__n64_8h.html#a7943f5a8d048e473ee0aa794dcb99bdc", null ],
+    [ "QOI_OP_RUN", "qoi__enc__n64_8h.html#ae5d48bf6dac2a377f464f2cf6bafa46d", null ],
+    [ "QOI_TAG", "qoi__enc__n64_8h.html#a9fe23f5d8858c1087f4422f0785e82d4", null ],
+    [ "QOI_TAG_MASK", "qoi__enc__n64_8h.html#a34586549fd20d3bc464e75233d78fed6", null ],
+    [ "qoi_channels", "qoi__enc__n64_8h.html#ab43b4500b020d589e0d01409a274fef1", [
+      [ "QOI_WHITESPACE", "qoi__enc__n64_8h.html#ab43b4500b020d589e0d01409a274fef1a27437e0d4fc546b79a0804756066a88e", null ],
+      [ "QOI_TRANSPARENT", "qoi__enc__n64_8h.html#ab43b4500b020d589e0d01409a274fef1a1a3001db28f8129db8ad84e59c4c62a0", null ]
+    ] ],
+    [ "qoi_colorspace", "qoi__enc__n64_8h.html#abd94d537a4d82c85f91df33cb9d1c2ac", [
+      [ "QOI_SRGB", "qoi__enc__n64_8h.html#abd94d537a4d82c85f91df33cb9d1c2acab9ce7d375c7c2380d7742b93a82a1200", null ],
+      [ "QOI_LINEAR", "qoi__enc__n64_8h.html#abd94d537a4d82c85f91df33cb9d1c2aca94f57d577c68140811e454d9d0237f2a", null ]
+    ] ],
+    [ "qoi_pixel_color", "qoi__enc__n64_8h.html#a98b23317ef4eb147cbaee7018516dc43", [
+      [ "QOI_RED", "qoi__enc__n64_8h.html#a98b23317ef4eb147cbaee7018516dc43a614a30e3716d1e5b000a774fff9da965", null ],
+      [ "QOI_GREEN", "qoi__enc__n64_8h.html#a98b23317ef4eb147cbaee7018516dc43a69cbe562a9b8aa38e6fe5302264dd353", null ],
+      [ "QOI_BLUE", "qoi__enc__n64_8h.html#a98b23317ef4eb147cbaee7018516dc43ac80edf3db3d51648e18f35f52de33c7a", null ],
+      [ "QOI_ALPHA", "qoi__enc__n64_8h.html#a98b23317ef4eb147cbaee7018516dc43a73c53d807e834544fd6c11eb44fea268", null ]
+    ] ],
+    [ "qoi_cmp_pixel", "qoi__enc__n64_8h.html#a9c3144ce899be5f030a8ef23d99a1c65", null ],
+    [ "qoi_desc_init", "qoi__enc__n64_8h.html#a36b9d0850e4065695c3490c8b3ff12cb", null ],
+    [ "qoi_enc_alloc_buffer", "qoi__enc__n64_8h.html#aa024e8979e183ffba7bf569eae93e78b", null ],
+    [ "qoi_enc_diff", "qoi__enc__n64_8h.html#a92536c11388a7a02a99446905b055363", null ],
+    [ "qoi_enc_done", "qoi__enc__n64_8h.html#aadbdb508a4501e4ef68ede99917d2678", null ],
+    [ "qoi_enc_free_buffer", "qoi__enc__n64_8h.html#adfa208f98fac9f2875ef8f89dd7caee0", null ],
+    [ "qoi_enc_index", "qoi__enc__n64_8h.html#adea51ab58480fbfb7e6418695df320d1", null ],
+    [ "qoi_enc_init", "qoi__enc__n64_8h.html#aa747d0089adf66a2365562b678b485f9", null ],
+    [ "qoi_enc_luma", "qoi__enc__n64_8h.html#a4c4ba8da44bac8d2dad534467567807a", null ],
+    [ "qoi_enc_reset_buffer", "qoi__enc__n64_8h.html#ac8fa8843656f81ea98518d4eb07144b5", null ],
+    [ "qoi_enc_rgb", "qoi__enc__n64_8h.html#aec333b9e4c757883bb7f62c24d008890", null ],
+    [ "qoi_enc_rgba", "qoi__enc__n64_8h.html#a006f72b09804aa1c903d4dd1d236ddcf", null ],
+    [ "qoi_enc_run", "qoi__enc__n64_8h.html#a9ea428ee90384855643116dff04c30eb", null ],
+    [ "qoi_encode_chunk", "qoi__enc__n64_8h.html#a934e33db95a99c9c4ece8b24cc1f2034", null ],
+    [ "qoi_get_be32", "qoi__enc__n64_8h.html#a01fb42ce40f81afe7850e02ed55407f5", null ],
+    [ "qoi_get_index_position", "qoi__enc__n64_8h.html#ab59bb45e4b7314494ed3b4b2d1573df7", null ],
+    [ "qoi_initalize_pixel", "qoi__enc__n64_8h.html#aa828246f6df86cb905fd77b80156bccf", null ],
+    [ "qoi_set_channels", "qoi__enc__n64_8h.html#aad0d45b041ccfd9624e21fc2f48985ed", null ],
+    [ "qoi_set_colorspace", "qoi__enc__n64_8h.html#afff58eba24290d84654a0824e4bc485a", null ],
+    [ "qoi_set_dimensions", "qoi__enc__n64_8h.html#a45b6d1d566c16df3d34387f04d4a10a7", null ],
+    [ "qoi_set_pixel_rgb", "qoi__enc__n64_8h.html#a52304190eca4e0a103ffbc6b95dc4a5e", null ],
+    [ "qoi_set_pixel_rgba", "qoi__enc__n64_8h.html#a25cf3942064bf3b5c469c9d3694386b2", null ],
+    [ "qoi_to_be32", "qoi__enc__n64_8h.html#aecaa7e9556d5993c24d0ae8ee999dbf9", null ],
+    [ "read_qoi_header", "qoi__enc__n64_8h.html#a474699f0e0a175f48eceb314a1080b85", null ],
+    [ "write_qoi_header", "qoi__enc__n64_8h.html#a3fe82c4b2cb0e0e0fe0afe423984b040", null ],
+    [ "QOI_MAGIC", "qoi__enc__n64_8h.html#a5f70f2a6cb7e9fbf7cd404988e2ad0e8", null ],
+    [ "QOI_PADDING", "qoi__enc__n64_8h.html#a84035539d0ebb777711f6152bbe7dfab", null ]
+];
