@@ -35,7 +35,7 @@ make clean
 use this command to run this program
 
 ```bash
-./example_enc screenshot.raw 320 240 screenshot.qoi
+./qoi_enc screenshot.raw 320 240 screenshot.qoi
 ```
 
 ---

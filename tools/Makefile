@@ -23,8 +23,8 @@
 CC = gcc
 CFLAGS = -Wall -O2
 
-TARGET = example_enc
-SOURCES = example_enc.c
+TARGET = qoi_enc
+SOURCES = qoi_enc.c.c
 OBJECTS = $(SOURCES:.c=.o)
 
 all: $(TARGET)
