@@ -42,15 +42,23 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define SIMPLIFIED_QOI_IMPLEMENTATION
-#include "sQOI.h"
-#include "conv_endian.h"
+#include "qoi_enc_n64.h"
+
+uint16_t read_be_u16(uint16_t val)
+{
+    uint8_t* val_ptr = (uint8_t*)&val;
+    return (uint16_t)((val_ptr[1] << 0) | (val_ptr[0] << 8));
+}
+
+uint32_t read_be_u32(uint32_t val)
+{
+    uint8_t* val_ptr = (uint8_t*)&val;
+    return (uint32_t)((val_ptr[3] << 0) | (val_ptr[2] << 8) | (val_ptr[1] << 16) | (val_ptr[0] << 24));
+}
 
 void print_help()
 {
-    printf("Example usage: qoi_enc <filename> <width> <height> <channels> <colorspace> <output>\n");
-    printf("Channels:\n3: No transparency\n4: Transparency\n\n");
-    printf("Colorspace:\n0: sRGB with linear alpha\n1: Linear RGB\n");
+    printf("Example usage: example_enc <filename> <width> <height> <output>\n");
 }
 
 int main(int argc, char* argv[])
@@ -58,13 +66,17 @@ int main(int argc, char* argv[])
 
     qoi_desc_t desc;
     qoi_enc_t enc;
-    uint8_t* qoi_file, *pixel_seek, *file_buffer0, *file_buffer1;
+    uint8_t* header, *file_buffer0, *file_buffer1;
     FILE* fp;
     uint32_t width, height;
     uint8_t channels, colorspace;
     size_t file_size;
+    uint16_t* frame_buffer;
+    uint32_t* frame_buffer32;
+
+    const uint32_t enc_buffer_size = 512;
     
-    if (argc < 6)
+    if (argc < 4)
     {
         print_help();
         return -1;
@@ -81,30 +93,10 @@ int main(int argc, char* argv[])
         width = strtoul(argv[2], NULL, 0);
         height = strtoul(argv[3], NULL, 0);
 
-        /* Check if requested amount or color channels is 3 or 4 according to QOI specifications */
-        if (strtoul(argv[4], NULL, 0) >= 3 && strtoul(argv[4], NULL, 0) <= 4) {
-            channels = strtoul(argv[4], NULL, 0);
-        }
-        else
-        {
-            printf("Channels entered must be 3 (RGB) or 4 (RGBA)\n");
-            print_help();
-            return -1;
-        }
+        /* framebuffer on n64 is always rgba screenshot */
+        channels = 4;
 
-        /* Check if requested colorspace is according to QOI specifications:
-           0 (sRGB with linear alpha)
-           1 (linear RGB)  
-        */
-        if (strtoul(argv[5], NULL, 0) >= 0 && strtoul(argv[5], NULL, 0) <= 1) {
-            colorspace = strtoul(argv[5], NULL, 0);
-        }
-        else
-        {
-            printf("Colorspace entered must be 0 (sRGB with linear alpha) or 1 (linear RGB)\n");
-            print_help();
-            return -1;
-        }
+        colorspace = 0;
 
         if (width < 0 || height < 0)
         {
@@ -127,7 +119,7 @@ int main(int argc, char* argv[])
     
     file_size = ftell(fp);
 
-    if ((size_t)width * (size_t)height * (size_t)channels < file_size)
+    /*if ((size_t)width * (size_t)height * (size_t)channels < file_size)
     {
         size_t image_size = (size_t)width * (size_t)height * (size_t)channels;
         size_t size_difference = file_size - image_size;
@@ -139,17 +131,18 @@ int main(int argc, char* argv[])
             image_size,
             size_difference,
             /* for printing plurals from of the word "byte" */
-            (size_difference > 1) ? "bytes" : "byte"
+            /*(size_difference > 1) ? "bytes" : "byte"
             );
         print_help();
 
         return -1;
-    }
+    }*/
 
     fseek(fp, 0, SEEK_SET);
 
     file_buffer0 = (uint8_t*)calloc(file_size + 1, sizeof(uint8_t));
     file_buffer1 = (uint8_t*)calloc(file_size + 1, sizeof(uint8_t)*2);
+    
     if (!file_buffer0 || !file_buffer1)
     {
         fclose(fp);
@@ -171,7 +164,9 @@ int main(int argc, char* argv[])
     }
 
     fclose(fp);
-    uint16_t* frame_buffer = (uint16_t*)file_buffer0;
+
+    frame_buffer = (uint16_t*)file_buffer0;
+
     for (size_t i = 0; i < file_size / sizeof(uint16_t); i++) {
             
         int r = (read_be_u16(frame_buffer[i]) >> 11) & 0x1F;
@@ -200,43 +195,64 @@ int main(int argc, char* argv[])
 
     }
 
+    header = (uint8_t*)calloc(32, sizeof(uint8_t));
+
     qoi_desc_init(&desc);
     
     qoi_set_dimensions(&desc, width, height);
     qoi_set_channels(&desc, channels);
     qoi_set_colorspace(&desc, colorspace);
     
-    qoi_file = (uint8_t*)malloc(((size_t)desc.width * (size_t)desc.height * ((size_t)desc.channels + 1)) + 14 + 8 + sizeof(size_t));
-    
-    if (!qoi_file)
-    {
+    fp = fopen(argv[4], "wb");
+    if (!fp) {
+        free(file_buffer0);
+        free(file_buffer1);
+        free(header);
         return 1;
     }
-
-    printf("Encoding %s to %s. Please wait . . .\n", argv[1], argv[6]);
-
-    write_qoi_header(&desc, qoi_file);
-
-    pixel_seek = file_buffer1;
-
-    qoi_enc_init(&desc, &enc, qoi_file);
-
-    while(!qoi_enc_done(&enc))
-    {
-        qoi_encode_chunk(&desc, &enc, pixel_seek);
-
-        pixel_seek += desc.channels;
-    }
-
-    fp = fopen(argv[6], "wb");
     
-    if (fp)
-    {
-        fwrite(qoi_file, 1, enc.offset - enc.data, fp);
-        fclose(fp);
-    } 
+    printf("Encoding %s to %s. Please wait . . .\n", argv[1], argv[4]);
 
-    free(qoi_file);
+    qoi_enc_init(&desc, &enc);
+    qoi_enc_alloc_buffer(&enc, enc_buffer_size);
+    qoi_enc_reset_buffer(&enc);
+
+    write_qoi_header(&desc, header);
+
+    fwrite(header, 1, 14, fp);
+
+    free(header);
+    header = NULL;
+    
+    frame_buffer32 = (uint32_t*)file_buffer1;
+    /* Encode the pixel data */
+    for (uint32_t px = 0; px < enc.len; px++)
+    {
+        uint32_t rgba = frame_buffer32[px];
+        qoi_encode_chunk(&desc, &enc, &rgba);
+
+        if (enc.pixels_written >= enc.len) {
+            fwrite(enc.enc_buffer, 1, enc.buffer_offset, fp);
+            break;
+        };
+
+        /* Write the buffer to the file when it is almost full,
+           leaving space for the padding bytes at the end of the file */
+        if (enc.buffer_offset >= enc.buffer_len-8) { 
+            fwrite(enc.enc_buffer, 1, enc.buffer_offset, fp);
+            qoi_enc_reset_buffer(&enc);
+        }
+        
+    }
+    fwrite(QOI_PADDING, sizeof(uint64_t), 1, fp);
+
+    fclose(fp);
+
+    printf("Done\n");
+
+
+    free(file_buffer0);
+    free(file_buffer1);
 
     return 0;
 }
