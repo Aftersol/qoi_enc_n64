@@ -180,18 +180,10 @@ int main(int argc, char* argv[])
         b = (b << 3) | (b >> 2);
         a = a * 255;
 
-        if (channels == 4)
-        {
-            file_buffer1[i*4] = r;
-            file_buffer1[i*4+1] = g;
-            file_buffer1[i*4+2] = b;
-            file_buffer1[i*4+3] = a;
-        }
-        else {
-            file_buffer1[i*3] = r;
-            file_buffer1[i*3+1] = g;
-            file_buffer1[i*3+2] = b;
-        }
+        file_buffer1[i*4] = r;
+        file_buffer1[i*4+1] = g;
+        file_buffer1[i*4+2] = b;
+        file_buffer1[i*4+3] = a;
 
     }
 
