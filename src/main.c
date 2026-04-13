@@ -50,7 +50,7 @@ enum whichScreenshotType {
     SCREENSHOT_TYPE_QOI,
     /// @brief The screenshot was captured into a buffer but not saved, which is used for testing the performance of capturing the framebuffer without the bottleneck of encoding or writing to the SD card
     SCREENSHOT_FRAME_CAPTURED,
-    /// @brief The screenshot was not saved because the SD card doesn't exist, which is used for testing the performance of the encoder and framebuffer capture without the bottleneck of writing to the SD card when the SD card doesn't exist, which is a common scenario for N64 users who want to use this encoder just for capturing screenshots to a buffer without saving them to the SD card
+    /// @brief The screenshot was not saved because the SD card doesn't exist, which is used for testing the performance of the encoder and framebuffer capture
     SCREENSHOT_NO_SD_CARD
 } whichScreenshotType;
 
