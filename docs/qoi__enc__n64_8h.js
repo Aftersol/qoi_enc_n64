@@ -29,7 +29,6 @@ var qoi__enc__n64_8h =
     [ "qoi_desc_init", "qoi__enc__n64_8h.html#a36b9d0850e4065695c3490c8b3ff12cb", null ],
     [ "qoi_enc_alloc_buffer", "qoi__enc__n64_8h.html#aa024e8979e183ffba7bf569eae93e78b", null ],
     [ "qoi_enc_diff", "qoi__enc__n64_8h.html#a92536c11388a7a02a99446905b055363", null ],
-    [ "qoi_enc_done", "qoi__enc__n64_8h.html#aadbdb508a4501e4ef68ede99917d2678", null ],
     [ "qoi_enc_free_buffer", "qoi__enc__n64_8h.html#adfa208f98fac9f2875ef8f89dd7caee0", null ],
     [ "qoi_enc_index", "qoi__enc__n64_8h.html#adea51ab58480fbfb7e6418695df320d1", null ],
     [ "qoi_enc_init", "qoi__enc__n64_8h.html#aa747d0089adf66a2365562b678b485f9", null ],

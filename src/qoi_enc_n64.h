@@ -175,7 +175,6 @@ bool read_qoi_header(qoi_desc_t *desc, void* data);
 /* QOI encoder functions */
 
 bool qoi_enc_init(qoi_desc_t* desc, qoi_enc_t* enc);
-bool qoi_enc_done(qoi_enc_t* enc);
 
 bool qoi_enc_alloc_buffer(qoi_enc_t *enc, uint32_t data_len);
 bool qoi_enc_free_buffer(qoi_enc_t *enc);
