@@ -148,9 +148,9 @@ int main(int argc, char* argv[])
             file_size,
             argv[1],
             image_size,
-            size_difference,
+            size_difference, */
             /* for printing plurals from of the word "byte" */
-            /*(size_difference > 1) ? "bytes" : "byte"
+            /* (size_difference > 1) ? "bytes" : "byte"
             );
         print_help();
 
