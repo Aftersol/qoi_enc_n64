@@ -24,7 +24,7 @@ CC = gcc
 CFLAGS = -Wall -O2 -Wpedantic
 
 TARGET = qoi_enc
-SOURCES = qoi_enc.c.c
+SOURCES = qoi_enc.c
 OBJECTS = $(SOURCES:.c=.o)
 
 all: $(TARGET)
