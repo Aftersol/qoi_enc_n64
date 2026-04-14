@@ -305,7 +305,7 @@ bool qoi_desc_init(qoi_desc_t *desc)
     desc->colorspace = 0;
 
     return true;
-};
+}
 
 /// @brief Sets the image dimensions of an image for QOI descriptor
 /// @param desc QOI descriptor to set the dimensions for
