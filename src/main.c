@@ -39,6 +39,7 @@
 #include "qoi_enc_n64.h"
 #include "colorconv.h"
 
+/// @brief Small buffer size for encoder because of memory constrant of 4MB for N64 without the 4MB Expansion Pak
 #define ENC_BUFFER_SIZE 4096
 
 /// @brief Checks what type of screenshot was taken to perform different actions based on the type of screenshot taken, such as displaying different information on the screen or saving the screenshot in a different way.
