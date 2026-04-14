@@ -28,6 +28,7 @@
 
 */
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <threads.h>
 
@@ -65,14 +66,19 @@ enum whichScreenshotType {
 /// @param bytesWritten The number of bytes written to the file
 /// @return Success of saving the screenshot
 bool save_screenshot(surface_t* disp, const char* filename, uint32_t *bytesWritten) {
-    if (disp == NULL || bytesWritten == NULL) return false;
+
+    FILE* fp;
+
     // Get the framebuffer data
     uint16_t* framebuffer = (uint16_t*)disp->buffer;
 
-    const uint32_t enc_buffer_size = 4096;
-
-    // Save the screenshot using the QOI encoder
     qoi_desc_t desc;
+    qoi_enc_t enc;
+    
+    uint8_t header[14];
+    uint8_t enc_buffer[ENC_BUFFER_SIZE];
+
+    if (disp == NULL || bytesWritten == NULL) return false;
 
     qoi_set_dimensions(&desc, 320, 240); // Resolution of the N64 framebuffer
 
@@ -80,26 +86,20 @@ bool save_screenshot(surface_t* disp, const char* filename, uint32_t *bytesWritt
     
     qoi_set_colorspace(&desc, QOI_SRGB); // The N64 framebuffer uses sRGB color space
 
-    qoi_enc_t enc; 
     qoi_enc_init(&desc, &enc); // Initialize the encoder with the descriptor
 
-    FILE* fp = fopen(filename, "wb");
-    *bytesWritten = 0;
-    if (!fp)
-    {
-        return false;
-    }
+    fp = fopen(filename, "wb");
+
+    if (!fp) return false;
     
-    // Write the QOI header
-    uint8_t header[14];
+    // Write the QOI header to SD card
     write_qoi_header(&desc, header);
     fwrite(header, 1, sizeof(header), fp);
     
-    uint8_t enc_buffer[ENC_BUFFER_SIZE];
     qoi_enc_set_buffer(&enc, enc_buffer, ENC_BUFFER_SIZE, false);
     //qoi_enc_alloc_buffer(&enc, ENC_BUFFER_SIZE);
 
-    *bytesWritten += 22; // 14+8=22
+    *bytesWritten = 22; // 14+8=22
 
     // Encode the pixel data
     for (uint32_t px = 0; px < enc.len; px++)
@@ -137,12 +137,19 @@ bool save_screenshot(surface_t* disp, const char* filename, uint32_t *bytesWritt
 /// @param bytesWritten The number of bytes written to the file
 /// @return Success of saving the screenshot
 bool save_screenshot_null(surface_t* disp, uint32_t *bytesWritten) {
-    if (disp == NULL || bytesWritten == NULL) return false;
-    // Get the framebuffer data
-    uint16_t* framebuffer = (uint16_t*)disp->buffer;
-
-    // Save the screenshot using the QOI encoder
+    uint16_t* framebuffer;
+    
     qoi_desc_t desc;
+    qoi_enc_t enc;
+
+    uint8_t header[14];
+    uint8_t enc_buffer[ENC_BUFFER_SIZE];
+
+    if (disp == NULL || bytesWritten == NULL) return false;
+
+    // Get the framebuffer data
+    framebuffer = (uint16_t*)disp->buffer;
+
     *bytesWritten = 0;
 
     qoi_set_dimensions(&desc, 320, 240); // Resolution of the N64 framebuffer
@@ -151,14 +158,11 @@ bool save_screenshot_null(surface_t* disp, uint32_t *bytesWritten) {
     
     qoi_set_colorspace(&desc, QOI_SRGB); // The N64 framebuffer uses sRGB color space
 
-    qoi_enc_t enc; 
     qoi_enc_init(&desc, &enc); // Initialize the encoder with the descriptor
 
-    // Write the QOI header
-    uint8_t header[14];
+    // Write the QOI header to buffer
     write_qoi_header(&desc, header);
 
-    uint8_t enc_buffer[ENC_BUFFER_SIZE];
     qoi_enc_set_buffer(&enc, enc_buffer, ENC_BUFFER_SIZE, false);
     //qoi_enc_alloc_buffer(&enc, ENC_BUFFER_SIZE, false);
 
@@ -196,16 +200,17 @@ bool save_screenshot_null(surface_t* disp, uint32_t *bytesWritten) {
 /// @param bytesWritten The number of bytes written to the file
 /// @return Success of saving the screenshot
 bool save_screenshot_raw(surface_t* disp, const char* filename, uint32_t *bytesWritten) {
+    uint16_t* framebuffer;
+    FILE* fp;
+    
     if (disp == NULL || bytesWritten == NULL || filename == NULL) return false;
+
     // Get the framebuffer data
-    uint16_t* framebuffer = (uint16_t*)disp->buffer;
+    framebuffer = (uint16_t*)disp->buffer;
     *bytesWritten = 0;
 
-    FILE* fp = fopen(filename, "wb");
-    if (!fp)
-    {
-        return false;
-    }
+    fp = fopen(filename, "wb");
+    if (!fp) return false;
     
     // Write the raw pixel data to the file
     fwrite(framebuffer, sizeof(uint16_t), 320 * 240, fp);
@@ -234,15 +239,20 @@ int main(void) {
     bool showInfo = true;
     bool showLogo = true;
 
+    uint64_t start, end;
+
     float encodedTime = 0.0f;
 
-    rdpq_font_t *font;
+    float delta = 0.0f;
 
     enum whichScreenshotType scrType = SCREENSHOT_NEVER_TAKEN;
     bool successfulSave = false;
     surface_t lastSavedFrame = surface_alloc(FMT_RGBA16, 320, 240);
 
     uint32_t bytesWritten = 0;
+
+    rdpq_font_t *font;
+    sprite_t* background, *logo;
 
     thrd_t thread;
     mtx_t mutex;
@@ -263,15 +273,13 @@ int main(void) {
     dfs_init(DFS_DEFAULT_LOCATION);
 
     display_init(RESOLUTION_320x240, DEPTH_16_BPP, 2, GAMMA_NONE, ANTIALIAS_RESAMPLE);
-    
 
     font = rdpq_font_load_builtin(FONT_BUILTIN_DEBUG_MONO);
     rdpq_text_register_font(1, font);
 
-    sprite_t* logo = sprite_load("rom:/n64brew.sprite");
-    sprite_t* background = sprite_load("rom:/pm5544.sprite");
-    uint64_t start = timer_ticks(), end = timer_ticks();
-    float delta = 0.0f;
+    logo = sprite_load("rom:/n64brew.sprite");
+    background = sprite_load("rom:/pm5544.sprite");
+    start = timer_ticks(), end = timer_ticks();
 
     sdCardExists = debug_init_sdfs("sd:/", -1);
     
@@ -280,10 +288,12 @@ int main(void) {
         surface_t* disp;
 
         joypad_port_t port = JOYPAD_PORT_1;
+        joypad_buttons_t pressed, held;
 
         joypad_poll();
-        joypad_buttons_t pressed = joypad_get_buttons_pressed(port);
-        joypad_buttons_t held = joypad_get_buttons_held(port);
+
+        pressed = joypad_get_buttons_pressed(port);
+        held = joypad_get_buttons_held(port);
 
         end = timer_ticks();
         delta = TIMER_MICROS(end - start) / 1000.0f; // Convert to milseconds
@@ -419,6 +429,8 @@ int main(void) {
             }
             else {
                 surface_t img = surface_alloc(FMT_RGBA16, 320, 240);
+
+                float startEncode, endEncode;
                 bool successfulScreenshot = false;
 
                 rdpq_attach(&img, NULL);
@@ -426,13 +438,13 @@ int main(void) {
                 rdpq_tex_blit(disp, 0, 0, NULL);
                 rdpq_detach();
 
-                float startEncode = timer_ticks();
+                startEncode = timer_ticks();
 
                 thrd_create(&thread, (thrd_start_t)save_screenshot_raw, &img, "sd:/screenshot.raw", &bytesWritten);
                 //successfulSave = save_screenshot_raw(&img, "sd:/screenshot.raw", &bytesWritten);
                 thrd_join(thread, &successfulScreenshot);
                 
-                float endEncode = timer_ticks();
+                endEncode = timer_ticks();
 
                 mutex_lock(&mutex);
 
@@ -463,6 +475,8 @@ int main(void) {
             }
             else {
                 surface_t img = surface_alloc(FMT_RGBA16, 320, 240);
+
+                float startEncode, endEncode;
                 bool successfulScreenshot = false;
 
                 rdpq_attach(&img, NULL);
@@ -470,13 +484,13 @@ int main(void) {
                 rdpq_tex_blit(disp, 0, 0, NULL);
                 rdpq_detach();
 
-                float startEncode = timer_ticks();
+                startEncode = timer_ticks();
 
                 thrd_create(&thread, (thrd_start_t)save_screenshot, &img, "sd:/screenshot.qoi", &bytesWritten);
                 //successfulSave = save_screenshot(&img, "sd:/screenshot.qoi", &bytesWritten);
                 thrd_join(thread, &successfulScreenshot);
 
-                float endEncode = timer_ticks();
+                endEncode = timer_ticks();
 
                 mutex_lock(&mutex);
 
@@ -493,17 +507,19 @@ int main(void) {
         }
         else if (pressed.d_up) {
             surface_t img = surface_alloc(FMT_RGBA16, 320, 240);
+
+            float startEncode, endEncode;
             bool successfulScreenshot = false;
-            
+
             rdpq_attach(&img, NULL);
             rdpq_set_mode_copy(false);
             rdpq_tex_blit(disp, 0, 0, NULL);
             rdpq_detach();
 
-            float startEncode = timer_ticks();
+            startEncode = timer_ticks();
             thrd_create(&thread, (thrd_start_t)save_screenshot_null, &img, &bytesWritten);
             //successfulSave = save_screenshot_null(&img, &bytesWritten);
-            float endEncode = timer_ticks();
+            endEncode = timer_ticks();
             thrd_join(thread, &successfulScreenshot);
 
             mutex_lock(&mutex);
