@@ -572,7 +572,7 @@ bool qoi_enc_set_buffer(qoi_enc_t *enc, void* newBuffer, uint32_t len, bool shou
 bool qoi_enc_set_buffer(qoi_enc_t *enc, void* newBuffer, uint32_t len)
 #endif
 {
-    if (enc == NULL || buffer == NULL || len == 0) return false;
+    if (enc == NULL || newBuffer == NULL || len == 0) return false;
     
     #if QOI_ALLOW_MEM_ALLOC
     if (shouldFreePrevBuffer == true && enc->enc_buffer)
