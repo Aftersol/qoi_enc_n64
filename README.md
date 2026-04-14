@@ -16,6 +16,11 @@ Small, QOI (Quite OK Image) encoder demo for Nintendo 64
 
 ## Requirements
 
+- A N64 flashcart with SD card support
+  - ### Example Flash Carts with SD card support
+    - [SummerCart64](https://summercart64.dev/)
+    - [EverDrive-64 X7](https://krikzz.com/our-products/cartridges/ed64x7.html)
+    
 - Libdragon Preview branch
 - MIPS64 C compiler
 - Make
