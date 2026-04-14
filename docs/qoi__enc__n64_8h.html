@@ -97,6 +97,7 @@ $(function(){initNavTree('qoi__enc__n64_8h.html','',''); });
 <div class="textblock"><code>#include &lt;stdint.h&gt;</code><br />
 <code>#include &lt;stddef.h&gt;</code><br />
 <code>#include &lt;stdbool.h&gt;</code><br />
+<code>#include &lt;stdlib.h&gt;</code><br />
 </div>
 <p><a href="qoi__enc__n64_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -111,6 +112,8 @@ Data Structures</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-define-members" class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
+<tr class="memitem:af3740c8c40288ec7e6898a237232db58" id="r_af3740c8c40288ec7e6898a237232db58"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#af3740c8c40288ec7e6898a237232db58">QOI_ALLOW_MEM_ALLOC</a>&#160;&#160;&#160;1</td></tr>
+<tr class="memitem:a4d5d7df2a8edf48e9499cd19ec224a24" id="r_a4d5d7df2a8edf48e9499cd19ec224a24"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a4d5d7df2a8edf48e9499cd19ec224a24">QOI_ALLOW_MEM_FREE</a>&#160;&#160;&#160;1</td></tr>
 <tr class="memitem:a9fe23f5d8858c1087f4422f0785e82d4" id="r_a9fe23f5d8858c1087f4422f0785e82d4"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a9fe23f5d8858c1087f4422f0785e82d4">QOI_TAG</a>&#160;&#160;&#160;0xC0</td></tr>
 <tr class="memdesc:a9fe23f5d8858c1087f4422f0785e82d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mask for the tag bits of the opcode, which are the two most significant bits of the opcode byte.  <br /></td></tr>
 <tr class="memitem:a34586549fd20d3bc464e75233d78fed6" id="r_a34586549fd20d3bc464e75233d78fed6"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a34586549fd20d3bc464e75233d78fed6">QOI_TAG_MASK</a>&#160;&#160;&#160;0x3F</td></tr>
@@ -171,8 +174,10 @@ Functions</h2></td></tr>
 <tr class="memitem:a474699f0e0a175f48eceb314a1080b85" id="r_a474699f0e0a175f48eceb314a1080b85"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a474699f0e0a175f48eceb314a1080b85">read_qoi_header</a> (<a class="el" href="structqoi__desc__t.html">qoi_desc_t</a> *desc, void *data)</td></tr>
 <tr class="memitem:aa747d0089adf66a2365562b678b485f9" id="r_aa747d0089adf66a2365562b678b485f9"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#aa747d0089adf66a2365562b678b485f9">qoi_enc_init</a> (<a class="el" href="structqoi__desc__t.html">qoi_desc_t</a> *desc, <a class="el" href="structqoi__enc__t.html">qoi_enc_t</a> *enc)</td></tr>
 <tr class="memdesc:aa747d0089adf66a2365562b678b485f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initalize the QOI encoder to the default state.  <br /></td></tr>
-<tr class="memitem:aa024e8979e183ffba7bf569eae93e78b" id="r_aa024e8979e183ffba7bf569eae93e78b"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#aa024e8979e183ffba7bf569eae93e78b">qoi_enc_alloc_buffer</a> (<a class="el" href="structqoi__enc__t.html">qoi_enc_t</a> *enc, uint32_t len)</td></tr>
-<tr class="memdesc:aa024e8979e183ffba7bf569eae93e78b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocates a buffer for the QOI encoder.  <br /></td></tr>
+<tr class="memitem:acc49aa6f70b623d6157c66d33930938b" id="r_acc49aa6f70b623d6157c66d33930938b"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#acc49aa6f70b623d6157c66d33930938b">qoi_enc_alloc_buffer</a> (<a class="el" href="structqoi__enc__t.html">qoi_enc_t</a> *enc, uint32_t len, bool shouldFreePrevBuffer)</td></tr>
+<tr class="memdesc:acc49aa6f70b623d6157c66d33930938b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocates a buffer for the QOI encoder.  <br /></td></tr>
+<tr class="memitem:ac6aa232a0bb410067465b4768708dd82" id="r_ac6aa232a0bb410067465b4768708dd82"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#ac6aa232a0bb410067465b4768708dd82">qoi_enc_set_buffer</a> (<a class="el" href="structqoi__enc__t.html">qoi_enc_t</a> *enc, void *newBuffer, uint32_t len, bool shouldFreePrevBuffer)</td></tr>
+<tr class="memdesc:ac6aa232a0bb410067465b4768708dd82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a buffer for the QOI encoder, automatically free if free buffer flag is set.  <br /></td></tr>
 <tr class="memitem:adfa208f98fac9f2875ef8f89dd7caee0" id="r_adfa208f98fac9f2875ef8f89dd7caee0"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#adfa208f98fac9f2875ef8f89dd7caee0">qoi_enc_free_buffer</a> (<a class="el" href="structqoi__enc__t.html">qoi_enc_t</a> *enc)</td></tr>
 <tr class="memdesc:adfa208f98fac9f2875ef8f89dd7caee0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees the buffer allocated for the QOI encoder.  <br /></td></tr>
 <tr class="memitem:ac8fa8843656f81ea98518d4eb07144b5" id="r_ac8fa8843656f81ea98518d4eb07144b5"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#ac8fa8843656f81ea98518d4eb07144b5">qoi_enc_reset_buffer</a> (<a class="el" href="structqoi__enc__t.html">qoi_enc_t</a> *enc)</td></tr>
@@ -200,6 +205,38 @@ Variables</h2></td></tr>
 <tr class="memdesc:a84035539d0ebb777711f6152bbe7dfab"><td class="mdescLeft">&#160;</td><td class="mdescRight">QOI end of file padding bytes.  <br /></td></tr>
 </table>
 <a name="doc-define-members" id="doc-define-members"></a><h2 id="header-doc-define-members" class="groupheader">Macro Definition Documentation</h2>
+<a id="af3740c8c40288ec7e6898a237232db58" name="af3740c8c40288ec7e6898a237232db58"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af3740c8c40288ec7e6898a237232db58">&#9670;&#160;</a></span>QOI_ALLOW_MEM_ALLOC</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define QOI_ALLOW_MEM_ALLOC&#160;&#160;&#160;1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00053">53</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
+
+</div>
+</div>
+<a id="a4d5d7df2a8edf48e9499cd19ec224a24" name="a4d5d7df2a8edf48e9499cd19ec224a24"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d5d7df2a8edf48e9499cd19ec224a24">&#9670;&#160;</a></span>QOI_ALLOW_MEM_FREE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define QOI_ALLOW_MEM_FREE&#160;&#160;&#160;1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00054">54</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
+
+</div>
+</div>
 <a id="ab610ca230e1099451b8e2845b523953a" name="ab610ca230e1099451b8e2845b523953a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab610ca230e1099451b8e2845b523953a">&#9670;&#160;</a></span>QOI_OP_DIFF</h2>
 
@@ -214,7 +251,7 @@ Variables</h2></td></tr>
 
 <p>01xxxxxx: The color is the same as the previous pixel, with each channel optionally modified by a small value stored in the remaining 6 bits of the opcode. </p>
 
-<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00068">68</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00074">74</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
 
 </div>
 </div>
@@ -232,7 +269,7 @@ Variables</h2></td></tr>
 
 <p>00xxxxxx: Use the color at the index xx in the color index array. </p>
 
-<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00066">66</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00072">72</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
 
 </div>
 </div>
@@ -250,7 +287,7 @@ Variables</h2></td></tr>
 
 <p>10xxxxxx: The color is represented by a luminance value and two chroma values. </p>
 
-<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00070">70</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00076">76</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
 
 </div>
 </div>
@@ -268,7 +305,7 @@ Variables</h2></td></tr>
 
 <p>11111110: Followed by 3 bytes of RGB data, representing the color of the pixel. This is used when the pixel value cannot be encoded using any of the other opcodes. </p>
 
-<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00062">62</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00068">68</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
 
 </div>
 </div>
@@ -286,7 +323,7 @@ Variables</h2></td></tr>
 
 <p>11111110: Followed by 3 bytes of RGB data and 1 byte of alpha data, representing the color of the pixel. This is used when the pixel value cannot be encoded using any of the other opcodes. </p>
 
-<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00064">64</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00070">70</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
 
 </div>
 </div>
@@ -304,7 +341,7 @@ Variables</h2></td></tr>
 
 <p>11xxxxxx: The color is the same as the previous pixel, and this run continues for xx pixels. </p>
 
-<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00072">72</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00078">78</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
 
 </div>
 </div>
@@ -322,7 +359,7 @@ Variables</h2></td></tr>
 
 <p>Mask for the tag bits of the opcode, which are the two most significant bits of the opcode byte. </p>
 
-<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00057">57</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00063">63</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
 
 </div>
 </div>
@@ -340,7 +377,7 @@ Variables</h2></td></tr>
 
 <p>Mask for the remaining bits of the opcode after masking out the tag bits. </p>
 
-<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00059">59</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00065">65</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
 
 </div>
 </div>
@@ -361,7 +398,7 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="ab43b4500b020d589e0d01409a274fef1a1a3001db28f8129db8ad84e59c4c62a0" name="ab43b4500b020d589e0d01409a274fef1a1a3001db28f8129db8ad84e59c4c62a0"></a>QOI_TRANSPARENT&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00075">75</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00081">81</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
 
 </div>
 </div>
@@ -381,7 +418,7 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="abd94d537a4d82c85f91df33cb9d1c2aca94f57d577c68140811e454d9d0237f2a" name="abd94d537a4d82c85f91df33cb9d1c2aca94f57d577c68140811e454d9d0237f2a"></a>QOI_LINEAR&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00076">76</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00082">82</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
 
 </div>
 </div>
@@ -403,7 +440,7 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="a98b23317ef4eb147cbaee7018516dc43a73c53d807e834544fd6c11eb44fea268" name="a98b23317ef4eb147cbaee7018516dc43a73c53d807e834544fd6c11eb44fea268"></a>QOI_ALPHA&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00074">74</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00080">80</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
 
 </div>
 </div>
@@ -451,7 +488,7 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>If the two pixels are the same color </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00229">229</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00241">241</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
 
 </div>
 </div>
@@ -479,12 +516,12 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>If the descriptor initialized successfully </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00286">286</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00298">298</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
 
 </div>
 </div>
-<a id="aa024e8979e183ffba7bf569eae93e78b" name="aa024e8979e183ffba7bf569eae93e78b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa024e8979e183ffba7bf569eae93e78b">&#9670;&#160;</a></span>qoi_enc_alloc_buffer()</h2>
+<a id="acc49aa6f70b623d6157c66d33930938b" name="acc49aa6f70b623d6157c66d33930938b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc49aa6f70b623d6157c66d33930938b">&#9670;&#160;</a></span>qoi_enc_alloc_buffer()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -497,7 +534,12 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint32_t</td>          <td class="paramname"><span class="paramname"><em>len</em></span>&#160;)</td>
+          <td class="paramtype">uint32_t</td>          <td class="paramname"><span class="paramname"><em>len</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>shouldFreePrevBuffer</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -507,12 +549,13 @@ Variables</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">enc</td><td>QOI encoder </td></tr>
     <tr><td class="paramname">len</td><td>Length of the buffer to allocate </td></tr>
+    <tr><td class="paramname">shouldFreePrevBuffer</td><td>if true, free previous buffer </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>If the buffer was allocated successfully </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00549">549</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00598">598</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
 
 </div>
 </div>
@@ -561,7 +604,7 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00385">385</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00397">397</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
 
 </div>
 </div>
@@ -589,7 +632,7 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>If the buffer was freed successfully </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00564">564</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00627">627</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
 
 </div>
 </div>
@@ -629,7 +672,7 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00376">376</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00388">388</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
 
 </div>
 </div>
@@ -655,13 +698,14 @@ Variables</h2></td></tr>
 <p>Initalize the QOI encoder to the default state. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramname">desc</td><td>descriptor of the QOI file </td></tr>
     <tr><td class="paramname">enc</td><td>QOI encoder </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>If the encoder initialized successfully </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00521">521</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00534">534</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
 
 </div>
 </div>
@@ -710,7 +754,7 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00398">398</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00410">410</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
 
 </div>
 </div>
@@ -738,7 +782,7 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>If the buffer was reset successfully </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00578">578</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00647">647</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
 
 </div>
 </div>
@@ -778,7 +822,7 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00351">351</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00363">363</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
 
 </div>
 </div>
@@ -818,7 +862,7 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00363">363</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00375">375</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
 
 </div>
 </div>
@@ -853,7 +897,52 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00408">408</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00420">420</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
+
+</div>
+</div>
+<a id="ac6aa232a0bb410067465b4768708dd82" name="ac6aa232a0bb410067465b4768708dd82"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac6aa232a0bb410067465b4768708dd82">&#9670;&#160;</a></span>qoi_enc_set_buffer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool qoi_enc_set_buffer </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structqoi__enc__t.html">qoi_enc_t</a> *</td>          <td class="paramname"><span class="paramname"><em>enc</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *</td>          <td class="paramname"><span class="paramname"><em>newBuffer</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t</td>          <td class="paramname"><span class="paramname"><em>len</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>shouldFreePrevBuffer</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets a buffer for the QOI encoder, automatically free if free buffer flag is set. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">enc</td><td>QOI encoder </td></tr>
+    <tr><td class="paramname">newBuffer</td><td>the new buffer the encoder should be assigned to </td></tr>
+    <tr><td class="paramname">len</td><td>Length of the buffer to allocate </td></tr>
+    <tr><td class="paramname">shouldFreePrevBuffer</td><td>if true, free previous buffer </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>If the buffer was allocated successfully </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00565">565</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
 
 </div>
 </div>
@@ -889,7 +978,7 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00419">419</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00431">431</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
 
 </div>
 </div>
@@ -925,7 +1014,7 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The value in big endian format </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00196">196</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00208">208</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
 
 </div>
 </div>
@@ -961,7 +1050,7 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The index position of the pixel in the buffer </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00278">278</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00290">290</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
 
 </div>
 </div>
@@ -988,7 +1077,7 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00269">269</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00281">281</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
 
 </div>
 </div>
@@ -1028,7 +1117,7 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00311">311</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00323">323</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
 
 </div>
 </div>
@@ -1068,7 +1157,7 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00319">319</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00331">331</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
 
 </div>
 </div>
@@ -1114,7 +1203,7 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00302">302</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00314">314</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
 
 </div>
 </div>
@@ -1166,7 +1255,7 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00246">246</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00258">258</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
 
 </div>
 </div>
@@ -1224,7 +1313,7 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00259">259</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00271">271</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
 
 </div>
 </div>
@@ -1260,7 +1349,7 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The value in big endian format </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00212">212</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00224">224</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
 
 </div>
 </div>
@@ -1313,7 +1402,7 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00327">327</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00339">339</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
 
 </div>
 </div>
@@ -1340,7 +1429,7 @@ Variables</h2></td></tr>
 
 <p>QOI magic number. </p>
 
-<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00079">79</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00085">85</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
 
 </div>
 </div>
@@ -1366,7 +1455,7 @@ Variables</h2></td></tr>
 
 <p>QOI end of file padding bytes. </p>
 
-<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00082">82</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="qoi__enc__n64_8h_source.html#l00088">88</a> of file <a class="el" href="qoi__enc__n64_8h_source.html">qoi_enc_n64.h</a>.</p>
 
 </div>
 </div>

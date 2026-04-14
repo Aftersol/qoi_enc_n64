@@ -1,5 +1,6 @@
 var main_8c =
 [
+    [ "ENC_BUFFER_SIZE", "main_8c.html#ac51cd684d180e9763141dbda658dfc09", null ],
     [ "whichScreenshotType", "main_8c.html#ad11a2ffd2e4f21e02590c1183ab9bfc3", [
       [ "SCREENSHOT_NEVER_TAKEN", "main_8c.html#ad11a2ffd2e4f21e02590c1183ab9bfc3a5dd366b2f737a3bc53ee6b326fe75c53", null ],
       [ "SCREENSHOT_TYPE_NULL", "main_8c.html#ad11a2ffd2e4f21e02590c1183ab9bfc3a33aa825b73953e3980f146adedefabd5", null ],
