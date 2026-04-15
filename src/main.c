@@ -363,7 +363,7 @@ int main(void) {
                     .width = 320-32,
                     .align = ALIGN_LEFT,
                     .wrap = WRAP_WORD,
-                }, 1, 32, 32, "Encoded in %.8f ms, bytes written: %lu bytes", encodedTime, bytesWritten);
+                }, 1, 32, 32, "Encoded in %.8f ms\nbytes written: %lu bytes", encodedTime, bytesWritten);
                 
             rdpq_text_printf(&(rdpq_textparms_t) {
                 .width = 320-32,
