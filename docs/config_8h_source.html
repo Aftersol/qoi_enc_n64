@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.16.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>N64 QOI Encoder Demo: QOI Encoder Demo for N64</title>
+<title>N64 QOI Encoder Demo: src/config.h Source File</title>
 <link rel="icon" href="n64_qoi_logo_64px.png" type="image/x-icon" />
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -65,7 +65,7 @@ $(function() {
   </div>
 </div>
 <script type="text/javascript">
-$(function(){initNavTree('index.html','',''); });
+$(function(){initNavTree('config_8h_source.html','',''); });
 </script>
 <div id="container">
 <div id="doc-content">
@@ -90,67 +90,32 @@ $(function(){initNavTree('index.html','',''); });
 </div>
 </div>
 
-<div><div class="header">
-  <div class="headertitle"><div class="title">QOI Encoder Demo for N64 </div></div>
+<div class="header">
+  <div class="headertitle"><div class="title">config.h</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="md__r_e_a_d_m_e"></a></p>
-<p><img src="docs_assets/n64_qoi_logo_256px.png" alt="A text that says QOI with a beer bottle behind QOI text with N64 logo on top" class="inline"/></p>
-<p><a href="https://github.com/user-attachments/assets/0d024e08-101c-45ba-83ee-db06d3b5e936">https://github.com/user-attachments/assets/0d024e08-101c-45ba-83ee-db06d3b5e936</a></p>
-<p>Small, QOI (Quite OK Image) encoder demo for Nintendo 64</p>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md1"></a>
-Controls</h1>
-<ul>
-<li>A - save to QOI</li>
-<li>B - save to raw</li>
-<li>Z - save frame to RAM</li>
-<li>DPad-Up - save to /dev/zero (null)</li>
-<li>DPad-Left - View last frame</li>
-<li>DPad-Down - Hide Logo</li>
-<li>Start - Hide Logo</li>
-</ul>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md2"></a>
-Requirements</h1>
-<ul>
-<li>A N64 flashcart with SD card support<ul>
-<li>### Example Flash Carts with SD card support<ul>
-<li><a href="https://summercart64.dev/">SummerCart64</a></li>
-<li><a href="https://krikzz.com/our-products/cartridges/ed64x7.html">EverDrive-64 X7</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li>Libdragon Preview branch</li>
-<li>MIPS64 C compiler</li>
-<li>Make</li>
-</ul>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md3"></a>
-How to Build</h1>
-<p>This tutorial assumes you have your N64 Toolchain set up including GCC for MIPS. Make sure you are on the preview branch of libdragon.</p>
-<p>Clone this repository with <span class="tt">--recurse-submodules</span> or if you haven't run:</p>
-<div class="fragment"><div class="line">git submodule update --init</div>
-</div><!-- fragment --> <hr  />
-<p> Initialize libdragon: </p><div class="fragment"><div class="line">libdragon init</div>
-</div><!-- fragment --><p> Then run make to build this project:</p>
-<div class="fragment"><div class="line">libdragon make</div>
-</div><!-- fragment --><hr  />
-<h1 class="doxsection"><a class="anchor" id="autotoc_md6"></a>
-Tools</h1>
-<ul>
-<li><a href="https://aftersol.github.io/n64_raw_framebuffer_converter/">Framebuffer Converter</a> Converts raw screenshot captured from N64 to PNG</li>
-</ul>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md7"></a>
-License</h1>
-<p>MIT License — see <a href="./LICENSE">LICENSE file</a> for details.</p>
-<p><a href="https://unsplash.com/photos/purple-white-and-orange-light-tZCrFpSNiIQ">purple white and orange light by mymind</a> - Licensed under Unsplash License </p>
-</div></div><!-- PageDoc -->
-<a href="doxygen_crawl.html"></a>
-</div><!-- contents -->
+<a href="config_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef QOI_ENC_N64_CONFIG_H</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define QOI_ENC_N64_CONFIG_H</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#if __cplusplus</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="config_8h.html#a890c871bc342e6030278bd222627bf95">    9</a></span><span class="preprocessor">#define QOI_ENC_VERSION &quot;1.0.0&quot;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="config_8h.html#a46821aaeef83b409bfe864268315c114">   11</a></span><span class="preprocessor">#define QOI_ENC_REVISION_DATE &quot;(2026-04-15)&quot;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#if __cplusplus</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>}</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#endif </span><span class="comment">// QOI_ENC_N64_CONFIG_H</span></div>
+</div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 </div><!-- container -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
+    <li class="navelem"><a href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a href="config_8h.html">config.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.16.1 </li>
   </ul>
 </div>

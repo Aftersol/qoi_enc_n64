@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.16.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>N64 QOI Encoder Demo: QOI Encoder Demo for N64</title>
+<title>N64 QOI Encoder Demo: src/config.h File Reference</title>
 <link rel="icon" href="n64_qoi_logo_64px.png" type="image/x-icon" />
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -65,7 +65,7 @@ $(function() {
   </div>
 </div>
 <script type="text/javascript">
-$(function(){initNavTree('index.html','',''); });
+$(function(){initNavTree('config_8h.html','',''); });
 </script>
 <div id="container">
 <div id="doc-content">
@@ -90,67 +90,71 @@ $(function(){initNavTree('index.html','',''); });
 </div>
 </div>
 
-<div><div class="header">
-  <div class="headertitle"><div class="title">QOI Encoder Demo for N64 </div></div>
+<div class="header">
+  <div class="headertitle"><div class="title">config.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="md__r_e_a_d_m_e"></a></p>
-<p><img src="docs_assets/n64_qoi_logo_256px.png" alt="A text that says QOI with a beer bottle behind QOI text with N64 logo on top" class="inline"/></p>
-<p><a href="https://github.com/user-attachments/assets/0d024e08-101c-45ba-83ee-db06d3b5e936">https://github.com/user-attachments/assets/0d024e08-101c-45ba-83ee-db06d3b5e936</a></p>
-<p>Small, QOI (Quite OK Image) encoder demo for Nintendo 64</p>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md1"></a>
-Controls</h1>
-<ul>
-<li>A - save to QOI</li>
-<li>B - save to raw</li>
-<li>Z - save frame to RAM</li>
-<li>DPad-Up - save to /dev/zero (null)</li>
-<li>DPad-Left - View last frame</li>
-<li>DPad-Down - Hide Logo</li>
-<li>Start - Hide Logo</li>
-</ul>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md2"></a>
-Requirements</h1>
-<ul>
-<li>A N64 flashcart with SD card support<ul>
-<li>### Example Flash Carts with SD card support<ul>
-<li><a href="https://summercart64.dev/">SummerCart64</a></li>
-<li><a href="https://krikzz.com/our-products/cartridges/ed64x7.html">EverDrive-64 X7</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li>Libdragon Preview branch</li>
-<li>MIPS64 C compiler</li>
-<li>Make</li>
-</ul>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md3"></a>
-How to Build</h1>
-<p>This tutorial assumes you have your N64 Toolchain set up including GCC for MIPS. Make sure you are on the preview branch of libdragon.</p>
-<p>Clone this repository with <span class="tt">--recurse-submodules</span> or if you haven't run:</p>
-<div class="fragment"><div class="line">git submodule update --init</div>
-</div><!-- fragment --> <hr  />
-<p> Initialize libdragon: </p><div class="fragment"><div class="line">libdragon init</div>
-</div><!-- fragment --><p> Then run make to build this project:</p>
-<div class="fragment"><div class="line">libdragon make</div>
-</div><!-- fragment --><hr  />
-<h1 class="doxsection"><a class="anchor" id="autotoc_md6"></a>
-Tools</h1>
-<ul>
-<li><a href="https://aftersol.github.io/n64_raw_framebuffer_converter/">Framebuffer Converter</a> Converts raw screenshot captured from N64 to PNG</li>
-</ul>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md7"></a>
-License</h1>
-<p>MIT License — see <a href="./LICENSE">LICENSE file</a> for details.</p>
-<p><a href="https://unsplash.com/photos/purple-white-and-orange-light-tZCrFpSNiIQ">purple white and orange light by mymind</a> - Licensed under Unsplash License </p>
-</div></div><!-- PageDoc -->
-<a href="doxygen_crawl.html"></a>
+
+<p><a href="config_8h_source.html">Go to the source code of this file.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-define-members" class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a890c871bc342e6030278bd222627bf95" id="r_a890c871bc342e6030278bd222627bf95"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a890c871bc342e6030278bd222627bf95">QOI_ENC_VERSION</a>&#160;&#160;&#160;&quot;1.0.0&quot;</td></tr>
+<tr class="memdesc:a890c871bc342e6030278bd222627bf95"><td class="mdescLeft">&#160;</td><td class="mdescRight">Version of the QOI encoder for N64.  <br /></td></tr>
+<tr class="memitem:a46821aaeef83b409bfe864268315c114" id="r_a46821aaeef83b409bfe864268315c114"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a46821aaeef83b409bfe864268315c114">QOI_ENC_REVISION_DATE</a>&#160;&#160;&#160;&quot;(2026-04-15)&quot;</td></tr>
+<tr class="memdesc:a46821aaeef83b409bfe864268315c114"><td class="mdescLeft">&#160;</td><td class="mdescRight">Revision date of the QOI encoder for N64.  <br /></td></tr>
+</table>
+<a name="doc-define-members" id="doc-define-members"></a><h2 id="header-doc-define-members" class="groupheader">Macro Definition Documentation</h2>
+<a id="a46821aaeef83b409bfe864268315c114" name="a46821aaeef83b409bfe864268315c114"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a46821aaeef83b409bfe864268315c114">&#9670;&#160;</a></span>QOI_ENC_REVISION_DATE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define QOI_ENC_REVISION_DATE&#160;&#160;&#160;&quot;(2026-04-15)&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Revision date of the QOI encoder for N64. </p>
+
+<p class="definition">Definition at line <a class="el" href="config_8h_source.html#l00011">11</a> of file <a class="el" href="config_8h_source.html">config.h</a>.</p>
+
+</div>
+</div>
+<a id="a890c871bc342e6030278bd222627bf95" name="a890c871bc342e6030278bd222627bf95"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a890c871bc342e6030278bd222627bf95">&#9670;&#160;</a></span>QOI_ENC_VERSION</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define QOI_ENC_VERSION&#160;&#160;&#160;&quot;1.0.0&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Version of the QOI encoder for N64. </p>
+
+<p class="definition">Definition at line <a class="el" href="config_8h_source.html#l00009">9</a> of file <a class="el" href="config_8h_source.html">config.h</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
+<div id="page-nav" class="page-nav-panel">
+<div id="page-nav-resize-handle"></div>
+<div id="page-nav-tree">
+<div id="page-nav-contents">
+</div><!-- page-nav-contents -->
+</div><!-- page-nav-tree -->
+</div><!-- page-nav -->
 </div><!-- container -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
+    <li class="navelem"><a href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a href="config_8h.html">config.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.16.1 </li>
   </ul>
 </div>

@@ -4,5 +4,6 @@ var searchData=
   ['colorconv_2eh_1',['colorconv.h',['../colorconv_8h.html',1,'']]],
   ['colorspace_2',['colorspace',['../structqoi__desc__t.html#a705def13e62375e75409badcf8bb9959',1,'qoi_desc_t']]],
   ['concatenated_5fpixel_5fvalues_3',['concatenated_pixel_values',['../unionqoi__pixel__t.html#a34b49710e36242a26db4edc8ff62bdf4',1,'qoi_pixel_t']]],
-  ['controls_4',['Controls',['../index.html#autotoc_md1',1,'']]]
+  ['config_2eh_4',['config.h',['../config_8h.html',1,'']]],
+  ['controls_5',['Controls',['../index.html#autotoc_md1',1,'']]]
 ];
