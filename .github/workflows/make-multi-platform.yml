@@ -71,4 +71,25 @@ jobs:
       with:
         SOURCE_FILE: tools/qoi_enc.exe
         DEST_NAME: qoi_enc_windows
+
+  build-windows-arm64:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v5
+
+    - name: Install MinGW ARM64 cross-compiler
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y gcc-aarch64-w64-mingw32
+
+    - name: Build Windows ARM64
+      working-directory: tools
+      run: make CC=aarch64-w64-mingw32-gcc TARGET=qoi_enc.exe
+
+    - name: Upload
+      uses: ./.github/actions/upload-artifact
+      with:
+        SOURCE_FILE: tools/qoi_enc.exe
+        DEST_NAME: qoi_enc_windows_arm64
         
