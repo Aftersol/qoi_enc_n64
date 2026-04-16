@@ -36,6 +36,8 @@
 #include "../libdragon/include/joypad.h"
 #include "../libdragon/include/joybus.h"
 
+#include "config.h"
+
 #include "qoi_enc_n64.h"
 #include "colorconv.h"
 
@@ -383,6 +385,14 @@ int main(void) {
                 .align = ALIGN_LEFT,
                 .wrap = WRAP_WORD,
             }, 1, 32, 72, "Save successful: %s", successfulSave ? "Yes" : "No");
+
+            rdpq_text_printf(&(rdpq_textparms_t) {
+                .width = 320-32,
+                .align = ALIGN_LEFT,
+                .wrap = WRAP_WORD,
+            }, 1, 32, 200, "Version: %s\nRevision date: %s",
+            QOI_ENC_VERSION,
+            QOI_ENC_REVISION_DATE);
             //mutex_unlock(&mutex);
         }
         if (pressed.start) {
