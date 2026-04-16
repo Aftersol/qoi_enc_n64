@@ -39,6 +39,7 @@ MKSPRITE_FLAGS ?=
 OBJS = $(BUILD_DIR)/main.o
 
 $(FILESYSTEM_DIR)/%.sprite: $(ASSETS_DIR)/%.png
+	@mkdir -p $(FILESYSTEM_DIR)
 	@mkdir -p $(dir $@)
 	@echo "    [SPRITE] $@"
 	@$(N64_MKSPRITE) $(MKSPRITE_FLAGS) -o $(FILESYSTEM_DIR) "$<"
