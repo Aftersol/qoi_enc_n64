@@ -2,7 +2,7 @@
 
     -- qoi_enc.c -- N64 framebuffer to QOI program
 
-    - version 1.1.n64.1 -- revised 2026-04-13
+    - version 1.2.n64.0 -- revised 2026-04-13
 
     -- Changelog --
 
@@ -71,8 +71,13 @@ uint32_t read_be_u32(uint32_t val)
     return (uint32_t)((val_ptr[3] << 0) | (val_ptr[2] << 8) | (val_ptr[1] << 16) | (val_ptr[0] << 24));
 }
 
+<<<<<<< Updated upstream
 const char version_number[] = "vversion 1.1.n64.1";
 const char revised_date[] = "2026-04-13";
+=======
+const char version_number[] = "vversion 1.2.n64.0";
+const char revised_date[] = "2026-04-16";
+>>>>>>> Stashed changes
 
 void print_version(void)
 {
