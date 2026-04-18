@@ -57,8 +57,8 @@ jobs:
           cd /tmp
           git clone -b preview https://github.com/DragonMinded/libdragon.git --depth=1
           cd libdragon
-          make install
-          make tools-install
+          make install -j 4
+          make tools-install -j 4
           cd $REAL_DIR
           make -j 4
           ls
