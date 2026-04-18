@@ -260,11 +260,11 @@ int main(void) {
 
     // Initialize libdragon subsystems
     debug_init_isviewer();
-    console_init();
+    //console_init();
 
     debug_init_usblog();
-    console_set_debug(true);
-
+    //console_set_debug(true);
+ 
     timer_init();
     joypad_init();
 
