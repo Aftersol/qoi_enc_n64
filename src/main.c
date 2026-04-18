@@ -271,7 +271,7 @@ int main(void) {
 
     dfs_init(DFS_DEFAULT_LOCATION);
 
-    display_init(RESOLUTION_320x240, DEPTH_16_BPP, 2, GAMMA_NONE, ANTIALIAS_RESAMPLE);
+    display_init(RESOLUTION_320x240, DEPTH_16_BPP, 2, GAMMA_NONE, FILTERS_RESAMPLE);
 
     font = rdpq_font_load_builtin(FONT_BUILTIN_DEBUG_MONO);
     rdpq_text_register_font(1, font);
@@ -305,7 +305,7 @@ int main(void) {
             // show that the screen is being updated and to have something to screenshot. 
             // The logo will bounce around the screen and change direction when it hits the edge of the screen.
             if (toDown) {
-                if(y < 240.0f - (logo->height * 0.5f)) {
+                if (y < 240.0f - (logo->height * 0.5f)) {
                     y += speed * delta;
                 }
                 else {
