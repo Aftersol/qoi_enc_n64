@@ -55,6 +55,10 @@
 
 #define ENC_BUFFER_SIZE 16384
 
+void print_version(void);
+
+void print_help(void);
+
 uint16_t read_be_u16(uint16_t val)
 {
     uint8_t* val_ptr = (uint8_t*)&val;
@@ -70,12 +74,12 @@ uint32_t read_be_u32(uint32_t val)
 const char version_number[] = "vversion 1.1.n64.1";
 const char revised_date[] = "2026-04-13";
 
-void print_version()
+void print_version(void)
 {
     printf("QOI Encoder\nversion: %s -- revised %s\n", version_number, revised_date);
 }
 
-void print_help()
+void print_help(void)
 {
     printf("Example usage: qoi_enc <filename> <width> <height> <output>\n");
 }
