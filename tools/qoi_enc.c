@@ -77,12 +77,12 @@ uint32_t read_be_u32(uint32_t val)
 const char version_number[] = "version 1.2.n64.0";
 const char revised_date[] = "2026-04-16";
 
-void print_version()
+void print_version(void)
 {
     printf("QOI Encoder\nversion: %s -- revised %s\n", version_number, revised_date);
 }
 
-void print_help()
+void print_help(void)
 {
     printf("Example usage: qoi_enc <filename> <width> <height> <bitdepth> <output>\n");
     printf("16: 16-bit RGBA5551\n32: 32-bit RGBA32\n");
