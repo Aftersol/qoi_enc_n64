@@ -1,5 +1,7 @@
 # Based on ClassiCube workflow script by UnknownShadow200, modified by Aftersol
 #
+# Original workflow build script: https://github.com/ClassiCube/ClassiCube/blob/master/.github/workflows/build_n64.yml
+#
 # Based on ClassiCube workflow script for building N64 ROM by UnknownShadow200 so here is the
 # license for this script per ClassiCube licensing terms
 #
