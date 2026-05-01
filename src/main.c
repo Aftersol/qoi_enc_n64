@@ -259,7 +259,7 @@ int main(void) {
     //mtx_init(&mutex, mtx_plain);
 
     // Initialize libdragon subsystems
-    debug_init_isviewer();
+    debug_init_emulog();
     //console_init();
 
     debug_init_usblog();

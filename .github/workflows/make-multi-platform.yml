@@ -15,7 +15,7 @@ jobs:
 
     - name: Build Linux x86_64
       working-directory: tools
-      run: make
+      run: make -j $(nproc)
 
     - name: Upload
       uses: ./.github/actions/upload-artifact
@@ -36,7 +36,7 @@ jobs:
 
     - name: Build Linux ARM64
       working-directory: tools
-      run: make CC=aarch64-linux-gnu-gcc
+      run: make CC=aarch64-linux-gnu-gcc -j $(nproc)
 
     - name: Upload
       uses: ./.github/actions/upload-artifact
@@ -57,7 +57,7 @@ jobs:
 
     - name: Build Linux ARM32
       working-directory: tools
-      run: make CC=arm-linux-gnueabihf-gcc
+      run: make CC=arm-linux-gnueabihf-gcc -j $(nproc)
 
     - name: Upload
       uses: ./.github/actions/upload-artifact
@@ -73,7 +73,7 @@ jobs:
 
     - name: Build MacOS x86_64
       working-directory: tools
-      run: make CC=clang CFLAGS="-Wall -O2 -Wpedantic -arch x86_64"
+      run: make CC=clang CFLAGS="-Wall -O2 -Wpedantic -arch x86_64" -j $(nproc)
 
     - name: Upload
       uses: ./.github/actions/upload-artifact
@@ -89,7 +89,7 @@ jobs:
 
     - name: Build MacOS ARM64
       working-directory: tools
-      run: make
+      run: make -j $(nproc)
 
     - name: Upload
       uses: ./.github/actions/upload-artifact
@@ -106,7 +106,7 @@ jobs:
     - name: Build Windows x86_64
       working-directory: tools
       shell: bash
-      run: make
+      run: make -j $(nproc)
 
     - name: Upload
       uses: ./.github/actions/upload-artifact
@@ -131,7 +131,7 @@ jobs:
 
     - name: Build Windows ARM64
       working-directory: tools
-      run: make CC=aarch64-w64-mingw32-gcc TARGET=qoi_enc.exe
+      run: make CC=aarch64-w64-mingw32-gcc TARGET=qoi_enc.exe -j $(nproc)
 
     - name: Upload
       uses: ./.github/actions/upload-artifact
