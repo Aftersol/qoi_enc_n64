@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
 
     - name: Build Linux x86_64
       working-directory: tools
@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
 
     - name: Install Linux ARM64 cross-compiler
       run: |
@@ -48,7 +48,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
 
     - name: Install Linux ARM32 cross-compiler
       run: |
@@ -69,7 +69,7 @@ jobs:
     runs-on: macos-latest
 
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
 
     - name: Build MacOS x86_64
       working-directory: tools
@@ -85,7 +85,7 @@ jobs:
     runs-on: macos-latest
 
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
 
     - name: Build MacOS ARM64
       working-directory: tools
@@ -101,7 +101,7 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
 
     - name: Build Windows x86_64
       working-directory: tools
@@ -118,7 +118,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
 
     - name: Install MinGW ARM64 cross-compiler
       run: |
