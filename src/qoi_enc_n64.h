@@ -626,17 +626,18 @@ bool qoi_enc_alloc_buffer(qoi_enc_t *enc, uint32_t len, bool shouldFreePrevBuffe
 /// @return If the buffer was freed successfully
 bool qoi_enc_free_buffer(qoi_enc_t *enc)
 {
-    if (enc == NULL || enc->enc_buffer == NULL) 
-        goto qoi_enc_free_buffer_skip;
-
-    free(enc->enc_buffer);
+    if (enc == NULL) return true;
+    
+    if (enc->enc_buffer != NULL)
+    {
+        free(enc->enc_buffer);
+    }
 
     enc->enc_buffer = NULL;
     enc->buffer_len = 0;
 
     qoi_enc_reset_buffer(enc);
 
-qoi_enc_free_buffer_skip:
     return true;
 }
 #endif
