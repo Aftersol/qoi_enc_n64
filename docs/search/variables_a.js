@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['whichscreenshottype_0',['whichScreenshotType',['../main_8c.html#ab18aaccc5ec876c06e35f219fda39472',1,'main.c']]],
-  ['width_1',['width',['../structqoi__desc__t.html#a325272ddd9a962f05deb905101d25cbd',1,'qoi_desc_t']]]
+  ['version_5fnumber_0',['version_number',['../qoi__enc_8c.html#aded3ae29c5d7de3c5e22405311cba553',1,'qoi_enc.c']]]
 ];

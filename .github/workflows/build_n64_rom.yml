@@ -5,7 +5,7 @@
 # Based on ClassiCube workflow script for building N64 ROM by UnknownShadow200 so here is the
 # license for this script per ClassiCube licensing terms
 #
-#﻿ Copyright (c) 2014 - 2024, UnknownShadow200
+# Copyright (c) 2014 - 2024, UnknownShadow200
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without modification, 
@@ -63,7 +63,6 @@ jobs:
           make tools-install -j $(nproc)
           cd $REAL_DIR
           make -j $(nproc)
-          ls
 
       - uses: ./.github/actions/upload-artifact
         if: ${{ always() && steps.build.outcome == 'success' }}

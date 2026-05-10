@@ -1,4 +1,10 @@
-/*
+/**
+    \file qoi_enc.c
+    \author Aftersol
+    \version 1.2.n64.0
+    \date 2026-04-16
+    \copyright (c) 2024-2026 Aftersol
+    \brief N64 framebuffer to QOI program
 
     -- qoi_enc.c -- N64 framebuffer to QOI program
 
@@ -22,7 +28,7 @@
     - version 1.0 (2025-01-13)
         - Initial release
 
-    MIT License
+    Code licensed under MIT License
 
     Copyright (c) 2024-2026 Aftersol
 
@@ -52,42 +58,97 @@
 #include <string.h>
 
 #include "qoi_enc_n64.h"
+
+/**
+ * \brief Enumeration for command-line argument indices.
+ */
 typedef enum {
+    /**
+     * \brief The name of the encoder program, typically "qoi_enc".
+     */
     ENC_NAME,
+    /**
+     * \brief The input filename.
+     */
     ENC_INPUT_FILENAME,
+    /**
+     * \brief The width of the image.
+     */
     ENC_WIDTH,
+    /**
+     * \brief The height of the image.
+     */
     ENC_HEIGHT,
+    /**
+     * \brief The bit depth of the image.
+     */
     ENC_BITDEPTH,
+    /**
+     * \brief The output filename.
+     */
     ENC_OUTPUT_FILENAME,
 } QOI_ENC_ARGS;
+
+/**
+ * \brief Buffer size for the encoder to limit RAM usage.
+ */
 #define ENC_BUFFER_SIZE 16384
 
+/**
+ * \brief Reads a big-endian 16-bit unsigned integer from memory.
+ * \param val The value to read.
+ * \return The big-endian value.
+ */
 uint16_t read_be_u16(uint16_t val)
 {
     uint8_t* val_ptr = (uint8_t*)&val;
     return (uint16_t)((val_ptr[1] << 0) | (val_ptr[0] << 8));
 }
 
+/**
+ * \brief Reads a big-endian 32-bit unsigned integer from memory.
+ * \param val The value to read.
+ * \return The big-endian value.
+ */
 uint32_t read_be_u32(uint32_t val)
 {
     uint8_t* val_ptr = (uint8_t*)&val;
     return (uint32_t)((val_ptr[3] << 0) | (val_ptr[2] << 8) | (val_ptr[1] << 16) | (val_ptr[0] << 24));
 }
 
+/**
+ * \brief Version number of the encoder.
+ */
 const char version_number[] = "version 1.2.n64.0";
+
+/**
+ * \brief Date of the last revision.
+ */
 const char revised_date[] = "2026-04-16";
 
+/**
+ * \brief Prints the version information of the encoder.
+ */
 void print_version(void)
 {
     printf("QOI Encoder\nversion: %s -- revised %s\n", version_number, revised_date);
 }
 
+/**
+ * \brief Prints the help information for the encoder.
+ */
 void print_help(void)
 {
     printf("Example usage: qoi_enc <filename> <width> <height> <bitdepth> <output>\n");
     printf("16: 16-bit RGBA5551\n32: 32-bit RGBA32\n");
 }
 
+/**
+ * \brief Main function for the QOI encoder.
+ * \param argc Number of command-line arguments.
+ * \param argv Array of command-line arguments.
+ * \return Exit status.
+ */
 int main(int argc, char* argv[])
 {
 

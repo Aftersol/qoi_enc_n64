@@ -1,6 +1,12 @@
-/*
+/**
+    \file qoi_enc.c
+    \author Aftersol
+    \version 1.0.1
+    \date 2026-05-09
+    \copyright (c) 2024-2026 Aftersol
+    \brief Main file for N64 QOI Encoder ROM
 
-    qoi_n64_scr.c
+    qoi_n64_scr.c - N64 ROM for demonstrating taking screenshots to QOI file.
 
     This file is the entry point of the N64 QOI Encoder ROM
 

@@ -1,3 +1,6 @@
+#	Makefile for N64 QOI Encoder ROM
+#
+#	MIT License
 #
 #   Copyright (c) 2026 Aftersol
 #

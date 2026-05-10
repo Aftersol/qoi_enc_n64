@@ -1,11 +1,9 @@
 var searchData=
 [
-  ['qoi_5falpha_0',['QOI_ALPHA',['../qoi__enc__n64_8h.html#a98b23317ef4eb147cbaee7018516dc43a73c53d807e834544fd6c11eb44fea268',1,'qoi_enc_n64.h']]],
-  ['qoi_5fblue_1',['QOI_BLUE',['../qoi__enc__n64_8h.html#a98b23317ef4eb147cbaee7018516dc43ac80edf3db3d51648e18f35f52de33c7a',1,'qoi_enc_n64.h']]],
-  ['qoi_5fgreen_2',['QOI_GREEN',['../qoi__enc__n64_8h.html#a98b23317ef4eb147cbaee7018516dc43a69cbe562a9b8aa38e6fe5302264dd353',1,'qoi_enc_n64.h']]],
-  ['qoi_5flinear_3',['QOI_LINEAR',['../qoi__enc__n64_8h.html#abd94d537a4d82c85f91df33cb9d1c2aca94f57d577c68140811e454d9d0237f2a',1,'qoi_enc_n64.h']]],
-  ['qoi_5fred_4',['QOI_RED',['../qoi__enc__n64_8h.html#a98b23317ef4eb147cbaee7018516dc43a614a30e3716d1e5b000a774fff9da965',1,'qoi_enc_n64.h']]],
-  ['qoi_5fsrgb_5',['QOI_SRGB',['../qoi__enc__n64_8h.html#abd94d537a4d82c85f91df33cb9d1c2acab9ce7d375c7c2380d7742b93a82a1200',1,'qoi_enc_n64.h']]],
-  ['qoi_5ftransparent_6',['QOI_TRANSPARENT',['../qoi__enc__n64_8h.html#ab43b4500b020d589e0d01409a274fef1a1a3001db28f8129db8ad84e59c4c62a0',1,'qoi_enc_n64.h']]],
-  ['qoi_5fwhitespace_7',['QOI_WHITESPACE',['../qoi__enc__n64_8h.html#ab43b4500b020d589e0d01409a274fef1a27437e0d4fc546b79a0804756066a88e',1,'qoi_enc_n64.h']]]
+  ['enc_5fbitdepth_0',['ENC_BITDEPTH',['../qoi__enc_8c.html#a420ea7a41a519fe2d3305e6bfc485038aac9f0920db47778e3d0c5f2f905414f0',1,'qoi_enc.c']]],
+  ['enc_5fheight_1',['ENC_HEIGHT',['../qoi__enc_8c.html#a420ea7a41a519fe2d3305e6bfc485038a5b7dce24cbd5e2fac2d47a0753835528',1,'qoi_enc.c']]],
+  ['enc_5finput_5ffilename_2',['ENC_INPUT_FILENAME',['../qoi__enc_8c.html#a420ea7a41a519fe2d3305e6bfc485038a898e1e61785fa8bab02d70108371389f',1,'qoi_enc.c']]],
+  ['enc_5fname_3',['ENC_NAME',['../qoi__enc_8c.html#a420ea7a41a519fe2d3305e6bfc485038a9af2a80975b4f22d8eb6cbfd365670b3',1,'qoi_enc.c']]],
+  ['enc_5foutput_5ffilename_4',['ENC_OUTPUT_FILENAME',['../qoi__enc_8c.html#a420ea7a41a519fe2d3305e6bfc485038ad19de275ab6ee43126c6e5b1cb183280',1,'qoi_enc.c']]],
+  ['enc_5fwidth_5',['ENC_WIDTH',['../qoi__enc_8c.html#a420ea7a41a519fe2d3305e6bfc485038a89724aa19fa5323d806397f1c9cd2a9c',1,'qoi_enc.c']]]
 ];
