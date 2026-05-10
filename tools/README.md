@@ -32,7 +32,7 @@ make clean
 
 ## How to Run
 
-use this command to run this program
+Use this command to run this program
 
 ```bash
 ./qoi_enc screenshot.raw 320 240 screenshot.qoi
