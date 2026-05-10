@@ -48,6 +48,9 @@ Then run make to build this project:
 libdragon make
 ```
 
+## How to Run
+Download the ROM in the [release page](https://github.com/Aftersol/n64_qoi_enc/releases) and put the downloaded qoi_enc.z64 file to the SD card. Then insert the SD card with the qoi_enc.z64 into the N64 flashcart. Insert the N64 flashcart with that SD card installed into the N64 and select the qoi_enc.z64 ROM from the list of ROMs to run. Alternatively, you can build the ROM and insert that ROM into the SD card plug that into the N64 flashcart.
+
 ---
 
 ## Tools
