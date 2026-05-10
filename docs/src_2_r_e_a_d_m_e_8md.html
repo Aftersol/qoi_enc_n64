@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.17.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>N64 QOI Encoder Demo: src Directory Reference</title>
+<title>N64 QOI Encoder Demo: src/README.md File Reference</title>
 <link rel="icon" href="n64_qoi_logo_64px.png" type="image/x-icon" />
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="codefolding.js"></script>
@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
   </div>
 </div>
 <script type="text/javascript">
-document.addEventListener('DOMContentLoaded',() => { initNavTree('dir_68267d1309a1af8e8297ef4c3efbcdba.html','',''); });
+document.addEventListener('DOMContentLoaded',() => { initNavTree('src_2_r_e_a_d_m_e_8md.html','',''); });
 </script>
 <div id="container">
 <div id="doc-content">
@@ -118,59 +118,10 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('dir_68267d1309
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">src Directory Reference</div></div>
+  <div class="headertitle"><div class="title">src/README.md File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 id="header-files" class="groupheader"><a id="files" name="files"></a>
-Files</h2></td></tr>
-<tr class="memitem:colorconv_2Eh" id="r_colorconv_2Eh"><td class="memItemLeft"><a href="colorconv_8h_source.html"><span class="icondoc"><div class="doc-icon"></div></span></a>&#160;</td><td class="memItemRight"><a class="el" href="colorconv_8h.html">colorconv.h</a></td></tr>
-<tr class="memdesc:colorconv_8h"><td class="mdescLeft">&#160;</td><td class="mdescRight">Color conversion utilities for N64 QOI encoder. <br /></td></tr>
-<tr class="memitem:config_2Eh" id="r_config_2Eh"><td class="memItemLeft"><a href="config_8h_source.html"><span class="icondoc"><div class="doc-icon"></div></span></a>&#160;</td><td class="memItemRight"><a class="el" href="config_8h.html">config.h</a></td></tr>
-<tr class="memdesc:config_8h"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configuration constants for N64 QOI encoder. <br /></td></tr>
-<tr class="memitem:main_2Ec" id="r_main_2Ec"><td class="memItemLeft"><a href="main_8c_source.html"><span class="icondoc"><div class="doc-icon"></div></span></a>&#160;</td><td class="memItemRight"><a class="el" href="main_8c.html">main.c</a></td></tr>
-<tr class="memitem:qoi_5Fenc_5Fn64_2Eh" id="r_qoi_5Fenc_5Fn64_2Eh"><td class="memItemLeft"><a href="src_2qoi__enc__n64_8h_source.html"><span class="icondoc"><div class="doc-icon"></div></span></a>&#160;</td><td class="memItemRight"><a class="el" href="src_2qoi__enc__n64_8h.html">qoi_enc_n64.h</a></td></tr>
-<tr class="memdesc:src_2qoi__enc__n64_8h"><td class="mdescLeft">&#160;</td><td class="mdescRight">QOI Encoder Library for N64. <br /></td></tr>
-</table>
-<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><h1 class="doxsection"><a class="anchor" id="autotoc_md0"></a>
-Source code for N64 QOI Encoder ROM</h1>
-<p><img src="../docs_assets/n64_qoi_logo_256px.png" alt="A text that says QOI with a beer bottle behind QOI text with N64 logo on top" class="inline"/></p>
-<p>This is the source code of the N64 QOI Encoder ROM that can take raw and QOI screenshots and save it to the SD card</p>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md1"></a>
-Requirements</h1>
-<ul>
-<li>A N64 flashcart with SD card support<ul>
-<li>### Example Flash Carts with SD card support<ul>
-<li><a href="https://summercart64.dev/">SummerCart64</a></li>
-<li><a href="https://krikzz.com/our-products/cartridges/ed64x7.html">EverDrive-64 X7</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li>Libdragon Preview branch</li>
-<li>MIPS64 C compiler</li>
-<li>Make</li>
-</ul>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md2"></a>
-How to Build</h1>
-<p>This tutorial assumes you have your N64 Toolchain set up including GCC for MIPS. Make sure you are on the preview branch of libdragon.</p>
-<p>Clone this repository with <span class="tt">--recurse-submodules</span> or if you haven't run:</p>
-<div class="fragment"><div class="line">git submodule update --init</div>
-</div><!-- fragment --> <hr  />
-<p> Initialize libdragon: </p><div class="fragment"><div class="line">libdragon init</div>
-</div><!-- fragment --><p> Then run make to build this project:</p>
-<div class="fragment"><div class="line">libdragon make</div>
-</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md4"></a>
-How to Run</h1>
-<p>Download the ROM in the <a href="https://github.com/Aftersol/n64_qoi_enc/releases">release page</a> and put the downloaded qoi_enc.z64 file to the SD card. Then insert the SD card with the qoi_enc.z64 into the N64 flashcart. Insert the N64 flashcart with that SD card installed into the N64 and select the qoi_enc.z64 ROM from the list of ROMs to run. Alternatively, you can build the ROM and insert that ROM into the SD card plug that into the N64 flashcart.</p>
-<hr  />
-<h1 class="doxsection"><a class="anchor" id="autotoc_md6"></a>
-Tools</h1>
-<ul>
-<li><a href="https://aftersol.github.io/n64_raw_framebuffer_converter/">Framebuffer Converter</a> Converts raw screenshot captured from N64 to PNG </li>
-</ul>
-</div></div><!-- contents -->
+</div><!-- contents -->
 </div><!-- doc-content -->
 <div id="page-nav" class="page-nav-panel">
 <div id="page-nav-resize-handle"></div>
@@ -183,7 +134,7 @@ Tools</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li>
+    <li class="navelem"><a href="src_2_r_e_a_d_m_e_8md.html">README.md</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.17.0 </li>
   </ul>
 </div>

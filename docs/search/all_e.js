@@ -9,5 +9,6 @@ var searchData=
   ['screenshot_5ftype_5fnull_6',['SCREENSHOT_TYPE_NULL',['../main_8c.html#ad11a2ffd2e4f21e02590c1183ab9bfc3a33aa825b73953e3980f146adedefabd5',1,'main.c']]],
   ['screenshot_5ftype_5fqoi_7',['SCREENSHOT_TYPE_QOI',['../main_8c.html#ad11a2ffd2e4f21e02590c1183ab9bfc3a9d4b5b2c8b70df2f29d80d5a186778f1',1,'main.c']]],
   ['screenshot_5ftype_5fraw_8',['SCREENSHOT_TYPE_RAW',['../main_8c.html#ad11a2ffd2e4f21e02590c1183ab9bfc3a01b2360fd718d4bee1c567839d5c90d7',1,'main.c']]],
-  ['supplementary_20tools_20for_20n64_20qoi_20encoder_20demo_9',['Supplementary Tools for N64 QOI Encoder Demo',['../dir_4eeb864c4eec08c7d6b9d3b0352cfdde.html#autotoc_md8',1,'']]]
+  ['source_20code_20for_20n64_20qoi_20encoder_20rom_9',['Source code for N64 QOI Encoder ROM',['../dir_68267d1309a1af8e8297ef4c3efbcdba.html#autotoc_md0',1,'']]],
+  ['supplementary_20tools_20for_20n64_20qoi_20encoder_20demo_10',['Supplementary Tools for N64 QOI Encoder Demo',['../dir_4eeb864c4eec08c7d6b9d3b0352cfdde.html#autotoc_md16',1,'']]]
 ];
