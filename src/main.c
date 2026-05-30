@@ -284,8 +284,8 @@ int main(void) {
     rdpq_text_register_font(1, font);
 
     lossysprite_init();
-    logo = sprite_load("rom:/n64brew.sprite");
-    background = sprite_load("rom:/pm5544.sprite");
+    logo = sprite_load("rom:/n64brew.rgba16.sprite");
+    background = sprite_load("rom:/pm5544.rgba16.sprite");
     start = timer_ticks(), end = timer_ticks();
 
     sdCardExists = debug_init_sdfs("sd:/", -1);
