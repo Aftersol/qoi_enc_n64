@@ -1,9 +1,9 @@
 /**
     \file colorconv.h
     \author Aftersol
-    \version 1.0.1
-    \date 2026-05-09
-    \copyright (c) 2024-2026 Aftersol
+    \version 1.0.2
+    \date 2026-05-30
+    \copyright (c) 2026 Aftersol
     \brief Color conversion utilities for N64 QOI encoder
 
     colorconv.h - Color conversion utilities for N64 QOI encoder

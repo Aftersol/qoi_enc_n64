@@ -1,9 +1,9 @@
 /**
     \file config.h
     \author Aftersol
-    \version 1.0.1
-    \date 2026-05-09
-    \copyright (c) 2024-2026 Aftersol
+    \version 1.0.2
+    \date 2026-05-30
+    \copyright (c) 2026 Aftersol
     \brief Configuration constants for N64 QOI encoder
 
     config.h - Configuration constants for N64 QOI encoder
@@ -40,9 +40,9 @@ extern "C" {
 #endif
 
 /// @brief Version of the QOI encoder for N64
-#define QOI_ENC_VERSION "1.0.1"
+#define QOI_ENC_VERSION "1.0.2"
 /// @brief Revision date of the QOI encoder for N64
-#define QOI_ENC_REVISION_DATE "(2026-05-09)"
+#define QOI_ENC_REVISION_DATE "(2026-05-30)"
 
 #if __cplusplus
 }

@@ -1,9 +1,9 @@
 /**
     \file qoi_enc.c
     \author Aftersol
-    \version 1.0.1
-    \date 2026-05-09
-    \copyright (c) 2024-2026 Aftersol
+    \version 1.0.2
+    \date 2026-05-30
+    \copyright (c) 2026 Aftersol
     \brief Main file for N64 QOI Encoder ROM
 
     qoi_n64_scr.c - N64 ROM for demonstrating taking screenshots to QOI file.
@@ -283,6 +283,7 @@ int main(void) {
     font = rdpq_font_load_builtin(FONT_BUILTIN_DEBUG_MONO);
     rdpq_text_register_font(1, font);
 
+    lossysprite_init();
     logo = sprite_load("rom:/n64brew.sprite");
     background = sprite_load("rom:/pm5544.sprite");
     start = timer_ticks(), end = timer_ticks();

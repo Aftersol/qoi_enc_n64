@@ -37,7 +37,7 @@ assets = $(ASSETS_DIR)/n64brew.png $(ASSETS_DIR)/pm5544.png
 assets_conv = $(addprefix $(FILESYSTEM_DIR)/,$(notdir $(assets:%.png=%.sprite)))
 
 AUDIOCONV_FLAGS ?=
-MKSPRITE_FLAGS ?=
+MKSPRITE_FLAGS ?= --lossy 80
 
 OBJS = $(BUILD_DIR)/main.o
 
