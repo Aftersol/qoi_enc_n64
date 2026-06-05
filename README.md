@@ -23,7 +23,7 @@ Small, QOI (Quite OK Image) encoder demo for Nintendo 64
     - [SummerCart64](https://summercart64.dev/)
     - [EverDrive-64 X7](https://krikzz.com/our-products/cartridges/ed64x7.html)
     
-- Libdragon Preview branch
+- [Libdragon Preview branch](https://github.com/DragonMinded/libdragon/tree/preview)
 - MIPS64 C compiler
 - Make
 
